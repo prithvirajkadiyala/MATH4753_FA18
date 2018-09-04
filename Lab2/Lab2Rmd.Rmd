@@ -1,0 +1,105 @@
+---
+title: "Lab 2"
+author: "Prithviraj Kadiyala"
+date: "`r Sys.Date()`"
+output: 
+  html_document:
+    toc: yes
+    toc_float: yes
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+#Tasks
+##Task 1
+```{r Task 1}
+getwd()
+```
+
+
+##Task 2
+```{r Task 2}
+epagas.df = read.csv("EPAGAS.csv")
+head(epagas.df)
+```
+
+##Task 3
+```{r Task 3}
+mpg = epagas.df$MPG
+mpg
+
+z = (mpg - mean(mpg))/sd(mpg)
+z
+
+mean(z)
+sd(z)
+
+##Outliers
+mpg[abs(z)>3]
+
+##Possible outliers
+mpg[abs(z)>=2 & abs(z)<=3]
+
+mycol = ifelse(abs(z)>3, "Red",
+        ifelse(abs(z)>=2 &abs(z)<=3,"Blue", "Black"))  
+library(lattice)
+dotplot(mpg,col=mycol)
+
+```
+
+##Task 4
+```{r Task 4}
+boxplot(mpg,col="green3",data=mpg,notch = TRUE,main = "MPG Boxplot", horizontal = TRUE)
+```
+
+
+###Chebyshev 2 std deviations
+
+$$
+\begin{align}
+1-\frac{1}{k^2}
+\end{align}
+$$
+
+Since k = 2
+$$
+\begin{align}
+2stddeviations &=1-\frac{1}{2^2}\\
+&=1-\frac{1}{4}\\
+&=\frac{4-1}{4}\\
+&= \frac{3}{4}
+\end{align}
+$$
+
+>
+    That is atleast 0.75 or 75%
+    
+    
+###Case check
+```{r case check}
+length(mpg[abs(z)<2])/length(mpg)
+```
+
+### Does chebyshev agree with the data?
+```
+Yes, It agrees but the assumption is too far from the results we have got here.
+It tells that atleast 75% is inside 2 standard deviatins but we have 96% which valid but too far from the assumption.
+```
+
+###Use Empirircal Rule
+```
+For 2 STD deviations 95% or more values lie inside the devaitions.
+```
+
+###How well does it correspond
+```
+It corresponds very well.
+It is off by 1% which would be negligible amount.
+```
+
+###Is empirical Rule valid in this case
+```
+Empirical Rule is valid in this case because it states that 95% of the data lies between two std deviations and in our cases the data shows that 96% lies within two standard deviations which is almost true.
+```

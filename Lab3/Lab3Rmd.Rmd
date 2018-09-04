@@ -1,0 +1,17 @@
+---
+title: "Lab 3"
+author: "Prithviraj Kadiyala"
+date: "August 31, 2018"
+output:
+  html_document:
+    fig_caption: yes
+    keep_md: yes
+    number_sections: yes
+    toc: yes
+    toc_float: yes
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+

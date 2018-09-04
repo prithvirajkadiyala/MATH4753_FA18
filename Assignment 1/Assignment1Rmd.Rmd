@@ -1,0 +1,37 @@
+---
+title: "Assignment 1"
+author: "Prithviraj Kadiyala"
+date: "August 26, 2018"
+output: 
+  html_document: 
+    toc: yes
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+#Question 1 Grading Pattern
+```
+    Assignments - 4 (15%)
+    Labs - 16 (10%)
+    Project - 1 (10%)
+    Clicker Quizzes (10%)
+    Chapter Quizzes (5%)
+    Midterm Exam - 2 (20%)
+    Final Exam - 30%
+    Grades - A - 90s B - 80s C - 70s & 60s D - 50s F - <50s
+```
+#Question 2
+```{r}
+getwd()
+DDT = read.csv("DDT.csv", header=TRUE, sep=",")
+head(DDT)
+m=with(DDT, as.numeric(levels(factor(MILE))))
+colm = c()
+for (i in 1:length(DDT$MILE)) {
+colm[i]=which(DDT$MILE[i]==m)
+}
+coplot(LENGTH~WEIGHT|RIVER*SPECIES,data=DDT,col=colm)
+```
+

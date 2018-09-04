@@ -1,0 +1,192 @@
+---
+title: "Lab 1"
+author: "Prithviraj Kadiyala"
+date: "August 22, 2018"
+output:
+  html_document:
+    toc: yes
+  pdf_document:
+    toc: yes
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+#Tasks
+
+##Task 1
+
+```{r get working directory}
+getwd()
+```
+
+##Task 2
+
+```{r read CSV}
+ddt=read.csv("DDT.csv")
+head(ddt)
+```
+
+##Task 3
+###Task 3.1 Qualitative Variables
+
+
+>
+    1. River
+    2. Species
+    
+###Task 3.2 Quantitative variables
+
+>
+    1. Mile
+    2. Length
+    3. Weight
+    4. DDT
+
+###Task 3.3 Number of Species
+
+
+>
+    Number of Species = 3
+    
+###Task 3.4 Subset
+
+```{r Subset with Weight and Species}
+with(ddt, ddt[WEIGHT>800 & SPECIES=="LMBASS",])
+```
+
+###Task 3.5 Subset River
+```{r Subset with River and DDT}
+with(ddt, ddt[DDT>4.0 & RIVER=="SCM",])
+```
+
+##Clicker Questions
+###Q1
+```{r}
+summary(ddt$LENGTH)
+```
+
+
+
+>
+    Mean length of Fish = 42.81 
+    
+###Q2
+```{r Standard Deviation of Weight}
+sd(ddt$WEIGHT)
+```
+
+
+>
+    Standard Deviation of weight = 376.5461
+    
+###Q3
+```{r}
+plot(ddt$WEIGHT,ddt$LENGTH,xlab="WEIGHT",ylab="LENGTH")
+```
+
+
+>
+    This is not the graph that is asked for the question.
+    2 - No 
+
+###Q4 Value of last v/20
+```{r}
+v=1:20
+v/20
+```
+
+##Task 4
+###Task 4.1
+```{r Table of River}
+table(ddt$RIVER)
+```
+
+###Task 4.2
+```{r Color coded barplot of River}
+sp=with(ddt,table(RIVER))
+sp
+barplot(sp, beside=TRUE, col=1:4)
+```
+
+###Task 4.3 table of River vs Fish
+```{r Table of River vs Fish}
+table(ddt$SPECIES,ddt$RIVER)
+```
+
+###Task 4.4 Barplot of River vs Species
+```{r Barplot of River vs Species}
+spriv=with(ddt,table(SPECIES,RIVER))
+spriv
+barplot(spriv,beside=TRUE,col=1:3)
+```
+
+##Task 5
+###Task 5.1 Pie of Species
+```{r Piechart of Species}
+sp=with(ddt,table(ddt$SPECIES))
+sp
+pie(sp,col=1:3)
+```
+
+
+###Task 5.2 Pie of Rivers
+```{r Piechart of Rivers}
+sp=with(ddt,table(ddt$RIVER))
+sp
+pie(sp,col=1:4)
+```
+
+##Task 6
+###Task 6.1 Boxplot DDT
+```{r}
+boxplot(ddt$DDT,col="Orange",data=ddt)
+```
+
+###Task 6.2 Boxplot Weight
+```{r}
+boxplot(ddt$WEIGHT,col="Red",data=ddt)
+```
+
+###Task 6.3 Boxplot Length
+```{r}
+boxplot(ddt$LENGTH,col="Red",data=ddt)
+```
+
+##Task 7 Coplots
+###Task 7.1 colpot Weight vs Length when River is given
+```{r WEIGHT VS LENGTH when RIVER is given}
+rivcol=with(ddt, ifelse(RIVER=="FCM","Blue",
+                        ifelse(RIVER=="LCM","Black",
+                               ifelse(RIVER=="SCM","Green","Orange"))))
+coplot(LENGTH~WEIGHT|RIVER,data=ddt,col=rivcol)
+```
+
+###Task 7.2 Coplot when DDT vs WEIGHT when Species is given
+```{r DDt vs WEIGHT when SPECIES is gIVEN}
+rivcol=with(ddt, ifelse(RIVER=="FCM","Red",
+                        ifelse(RIVER=="LCM","Blue",
+                               ifelse(RIVER=="SCM","Green","Orange"))))
+coplot(DDT~WEIGHT|SPECIES,data=ddt,col=rivcol)
+```
+
+##Task 8
+### Task 8.1 Box plot
+```{r}
+library(ggplot2)
+p10 = qplot(RIVER,WEIGHT,data=ddt,fill=SPECIES,geom="boxplot")
+p10 + labs(title = "Prithviraj Kadiyala")
+```
+
+### Task 8.2 Violin Plots
+```{r}
+p11 = qplot(RIVER,LENGTH,fill=SPECIES,data=ddt,geom="violin")
+p11 + labs(title="Prithviraj Kadiyala")
+
+```
+
+### Task 8.3 Scatter Plot
+```{r}
+p12 = qplot(WEIGHT,LENGTH,col=SPECIES,data=ddt,geom="point")
+p12 + labs(title="Prithviraj Kadiyala")
