@@ -1,26 +1,4 @@
-mtbe = read.csv("MTBE.csv")
-mtbe
-
-table(mtbe$Aquifier,mtbe$MTBE.Detect)->tab4
-tab4
-addmargins(tab4) #Adds up and gives the total columns
-
-round(7/223,4)
-
-round((15+7+63)/223,4)
-
-round(138/153,4)
-
-round(7/22,4)
-
-round(63/70,4)
-round((63+7+138)/223,4)
-round(15/223,4)
-
-choose(8,2)
-factorial(8)/(factorial(6)*factorial(2))
-
-
+#This will be a different path if in the lab or at home
 dird="\\Users\\HyDRO-Lab\\Desktop\\MATH4753\\DATAxls\\"
 
 #my function to read data 
