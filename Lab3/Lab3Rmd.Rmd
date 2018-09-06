@@ -15,3 +15,172 @@ output:
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
+#Task 1
+```{r task1}
+getwd()
+```
+
+#Task 2
+```{r task2}
+spruce.df=read.csv("SPRUCE.csv")
+head(spruce.df)
+```
+
+#Task 3
+##Prediction
+```{r prediction}
+plot(Height~BHDiameter,bg="Blue",pch=21,cex=1.2,
+     ylim=c(0,max(Height)),xlim=c(0,max(BHDiameter)), 
+     main="Spruce height prediction",data=spruce.df)
+```
+
+##Trendscatter
+```{r trendscatter}
+library(s20x)
+layout(matrix(1:3,nr=3,nc=1))
+trendscatter(Height~BHDiameter,f=0.5,data=spruce.df, main="Plot of Height vs BHDiameter with f=0.5")
+trendscatter(Height~BHDiameter,f=0.6,data=spruce.df, main="Plot of Height vs BHDiameter with f=0.6")
+trendscatter(Height~BHDiameter,f=0.7,data=spruce.df, main="Plot of Height vs BHDiameter with f=0.7")
+```
+
+##Creating Linear model
+```{r linear_model}
+# Now make the linear model
+spruce.lm=lm(Height~BHDiameter,data=spruce.df)
+plot(Height~BHDiameter,bg="Blue",pch=21,cex=1.2,
+     ylim=c(0,max(Height)),xlim=c(0,max(BHDiameter)), 
+     main="Spruce height prediction",data=spruce.df)
+abline(spruce.lm)
+```
+
+```
+The graph seems to be acccurate at the first glance but it misses out on a few points towards the ends of each side.
+```
+
+##Curve trend for the same data for Comparison
+```{r curve line for scatter plot}
+
+plot(Height~BHDiameter,bg="Blue",pch=21,cex=1.2,
+     ylim=c(0,max(Height)),xlim=c(0,max(BHDiameter)), 
+     main="Spruce height prediction",data=spruce.df)
+lines(lowess(spruce.df), col="blue")
+```
+
+```
+In this graph we can see that the curved graph seems to include almost all of the points near the line.
+This graph seems more accurate than the previous graph.
+```
+
+#Task 4
+##Layout graph
+```{r}
+layout(matrix(1:4,nr=2,nc=2,byrow=TRUE))
+
+#plot1
+plot(Height~BHDiameter,bg="Blue",pch=21,cex=1.2,
+ylim=c(0,1.1*max(Height)),xlim=c(0,1.1*max(BHDiameter)), 
+main="Spruce height prediction",data=spruce.df)
+
+abline(spruce.lm)
+
+#plot2
+plot(Height~BHDiameter,bg="Blue",pch=21,cex=1.2,
+ylim=c(0,1.1*max(Height)),xlim=c(0,1.1*max(BHDiameter)), 
+main="Spruce height prediction",data=spruce.df)
+
+abline(spruce.lm)
+yhat=with(spruce.df,predict(spruce.lm,data.frame(BHDiameter)))
+yhat=fitted(spruce.lm) 
+with(spruce.df,{
+segments(BHDiameter,Height,BHDiameter,yhat)
+})
+
+#plot3
+plot(Height~BHDiameter,bg="Blue",pch=21,cex=1.2,
+ylim=c(0,1.1*max(Height)),xlim=c(0,1.1*max(BHDiameter)), 
+main="Spruce height prediction",data=spruce.df)
+
+with(spruce.df, abline(h=mean(Height)))
+abline(spruce.lm)
+with(spruce.df, segments(BHDiameter,mean(Height),BHDiameter,yhat,col="Red"))
+
+#plot4
+plot(Height~BHDiameter,bg="Blue",pch=21,cex=1.2,
+ylim=c(0,1.1*max(Height)),xlim=c(0,1.1*max(BHDiameter)), 
+main="Spruce height prediction",data=spruce.df)
+
+with(spruce.df,abline(h=mean(Height)))
+with(spruce.df, segments(BHDiameter,Height,BHDiameter,mean(Height),col="Green"))
+```
+
+##Calculate MSS,RSS and TSS
+```{r RSS}
+RSS=with(spruce.df,sum((Height-yhat)^2))
+RSS
+```
+
+```{r MSS}
+MSS=with(spruce.df,sum((yhat-mean(Height))^2))
+MSS
+```
+
+```{r TSS}
+TSS=with(spruce.df,sum((Height-mean(Height))^2))
+TSS
+```
+
+##Calculate MSS/TSS
+```{r}
+MSS/TSS
+```
+
+```
+It is equal to the Multiple R-squared
+```
+
+##Tss=Mss+RSS?
+```{r}
+TSS
+
+MSS+RSS
+```
+
+```
+They are equal
+```
+
+#Task 5
+##Summarize
+```{r}
+summary(spruce.lm)
+```
+
+##Value of slope and intercept
+```{r}
+coef(spruce.lm)
+```
+
+```
+Value of slope = 0.48147
+
+Value of intercept = 9.14684
+```
+##Fitted line Equation
+```
+Height = 9.146839 + BHDiameter * 0.4814743
+```
+##Predictions
+```{r}
+predict(spruce.lm, data.frame(BHDiameter=c(15,18,20)))
+```
+
+#Task 6
+```{r}
+library(ggplot2)
+ggplot(data = spruce.lm, aes(x = Height, y = BHDiameter)) + 
+  geom_point(color='blue') +
+  geom_smooth(method = "lm", se = TRUE) +
+  geom_line(aes(Height, BHDiameter)) +
+  labs(title="Height Vs BHDiameter")
+```
+

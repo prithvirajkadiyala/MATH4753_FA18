@@ -1,3 +1,101 @@
+#Task 1
+getwd()
+
+
+#Task 2
+spruce.df=read.csv("SPRUCE.csv")
+head(spruce.df)
+
+#Task 3
+plot(Height~BHDiameter,bg="Blue",pch=21,cex=1.2,
+     ylim=c(0,max(Height)),xlim=c(0,max(BHDiameter)), 
+     main="Spruce height prediction",data=spruce.df)
+
+library(s20x)
+layout(matrix(1:3,nr=3,nc=1))
+layout.show(3)
+trendscatter(Height~BHDiameter,f=0.5,data=spruce.df, main="Plot of Height vs BHDiameter with f=0.5")
+trendscatter(Height~BHDiameter,f=0.6,data=spruce.df, main="Plot of Height vs BHDiameter with f=0.6")
+trendscatter(Height~BHDiameter,f=0.7,data=spruce.df, main="Plot of Height vs BHDiameter with f=0.7")
+
+# Now make the linear model
+spruce.lm=lm(Height~BHDiameter,data=spruce.df)
+layout(1)
+plot(Height~BHDiameter,bg="Blue",pch=21,cex=1.2,
+     ylim=c(0,max(Height)),xlim=c(0,max(BHDiameter)), 
+     main="Spruce height prediction",data=spruce.df)
+
+
+abline(spruce.lm)
+lines(lowess(spruce.df), col="blue")
+
+
+
+
+
+layout(matrix(1:4,nr=2,nc=2,byrow=TRUE))
+
+#Lets look at where the plots will go
+layout.show(4)
+
+#Plot the data
+plot(Height~BHDiameter,bg="Blue",pch=21,cex=1.2,
+     ylim=c(0,1.1*max(Height)),xlim=c(0,1.1*max(BHDiameter)), 
+     main="Spruce height prediction",data=spruce.df)
+# add the line
+abline(spruce.lm)
+
+
+#make a new plot
+plot(Height~BHDiameter,bg="Blue",pch=21,cex=1.2,
+     ylim=c(0,1.1*max(Height)),xlim=c(0,1.1*max(BHDiameter)), 
+     main="Spruce height prediction",data=spruce.df)
+
+abline(spruce.lm)
+
+#make yhat the estimates of E[Height | BHDiameter]
+yhat=with(spruce.df,predict(spruce.lm,data.frame(BHDiameter)))
+yhat=fitted(spruce.lm)
+# Draw in segments making the residuals (regression errors)
+with(spruce.df,{
+  segments(BHDiameter,Height,BHDiameter,yhat)
+})
+
+RSS=with(spruce.df,sum((Height-yhat)^2))
+
+RSS
+
+#make a new plot
+plot(Height~BHDiameter,bg="Blue",pch=21,cex=1.2,
+     ylim=c(0,1.1*max(Height)),xlim=c(0,1.1*max(BHDiameter)), 
+     main="Spruce height prediction",data=spruce.df)
+
+#make nieve model
+with(spruce.df, abline(h=mean(Height)))
+abline(spruce.lm)
+
+#make the explained errors (explained by the model)
+with(spruce.df, segments(BHDiameter,mean(Height),BHDiameter,yhat,col="Red"))
+MSS=with(spruce.df,sum((yhat-mean(Height))^2))
+MSS
+
+# Total  error
+#make a new plot
+plot(Height~BHDiameter,bg="Blue",pch=21,cex=1.2,
+     ylim=c(0,1.1*max(Height)),xlim=c(0,1.1*max(BHDiameter)), 
+     main="Spruce height prediction",data=spruce.df)
+
+with(spruce.df,abline(h=mean(Height)))
+with(spruce.df, segments(BHDiameter,Height,BHDiameter,mean(Height),col="Green"))
+
+
+
+
+
+
+
+
+
 #This will be a different path if in the lab or at home
 dird="\\Users\\HyDRO-Lab\\Desktop\\MATH4753\\DATAxls\\"
 
