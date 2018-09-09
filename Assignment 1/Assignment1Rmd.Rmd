@@ -2,9 +2,13 @@
 title: "Assignment 1"
 author: "Prithviraj Kadiyala"
 date: "August 26, 2018"
-output: 
-  html_document: 
+output:
+  html_document:
+    fig_caption: yes
+    keep_md: yes
+    number_sections: yes
     toc: yes
+    toc_float: yes
 ---
 
 ```{r setup, include=FALSE}
@@ -23,6 +27,7 @@ knitr::opts_chunk$set(echo = TRUE)
     Grades - A - 90s B - 80s C - 70s & 60s D - 50s F - <50s
 ```
 #Question 2
+##Coplot
 ```{r}
 getwd()
 DDT = read.csv("DDT.csv", header=TRUE, sep=",")
@@ -34,4 +39,204 @@ colm[i]=which(DDT$MILE[i]==m)
 }
 coplot(LENGTH~WEIGHT|RIVER*SPECIES,data=DDT,col=colm)
 ```
+
+##Interpret lower left three
+```
+we are able to get the information about LENGTH vs WEIGHT while we compare the CCATFISH(SPECIES) with the RIVERS(FCM,LCM and SCM).
+```
+
+##Line A
+```{r line A}
+m=with(DDT, as.numeric(levels(factor(MILE))))
+m
+```
+
+```
+Line A is creating vector with distinct values of MILE without repetition in ascending order.
+```
+
+##Line B
+```
+which gets the index of the element and sorts it into it's specific column it goes in.
+```
+
+##Mean of the value
+```{r}
+ddt = read.csv("DDT.csv", header=TRUE, sep=",")
+m=ddt[ddt$RIVER=="FCM" & ddt$SPECIES=="CCATFISH",]
+m
+mean(m$DDT)
+```
+```
+The mean of DDT for CCATFISH found in FCM river is `r mean(m$DDT)`
+```
+
+#Question 3 MS1.14 Pg:8
+```
+a. Length of maximum span (feet) : Quantitative
+b. Number of vehicle lanes : Quantitative
+c. Toll bridge (yes or no) : Qualitative
+d. Average daily traffic : Quantitative
+e. Condition of deck (good, fair, or poor) : Qualitative
+f. Bypass or detour length (miles) : Quantitative
+g. Route type (interstate, U.S., state, county, or city) : Qualitative
+```
+
+#Question 4
+##Four Random Sampling Designs
+```
+Simple random sample
+Stratified random sampling
+Cluster sampling
+Systematic sampling
+```
+##Brief Description
+
+
+**Simple random sample**: n experimental units is a sample selected from the population in such a way that every different sample of size n has an equal chance of selection. 
+
+**Stratified random sampling:** typically used when the experimental units associated with the population can be separated into two or more groups of units, called strata, where the characteristics of the experimental units are more similar within strata then across strata.
+
+**Cluster sampling**: sample natural groupings (clusters) of experimental units first,
+then collect data from all experimental units within each cluster.
+
+**Systematic sampling**: involves systematically selecting every kth experimental
+unit from a list of all experimental units.
+
+#Question 5
+##Omit NA's
+```{r}
+mtbe=read.csv("MTBE.csv")
+head(mtbe) # First six lines
+dim(mtbe) # rows and columns
+ind=sample(1:223,5,replace=FALSE) # random indices
+mtbe[ind,]
+
+mtbeo=na.omit(mtbe)
+head(mtbeo)
+```
+
+##SD of Aquifier='Bedrock'
+```{r}
+depth=mtbeo[mtbeo$Aquifier=="Bedrock",]$Depth
+sd(depth)
+```
+
+
+#Question 6
+##Plot of sample
+```{r}
+eq=read.csv("EARTHQUAKE.csv")
+head(eq) # First six lines
+dim(eq) # rows and columns
+ind=sample(1:2500,30,replace=FALSE) # random indices
+eq[ind,]
+
+plot(ts(eq$MAG))
+```
+
+##Median of Magnitude
+```{r}
+median(eq$MAGNITUDE)
+```
+
+
+#Question 7
+
+__(a).__ Data selection method: stratified sample method.
+
+__(b).__ population: fish in the Tennessee River and tributaries.
+
+__(c).__ Qualitative variables in DDT are: Location of capture and species(Flint Creek, Limestone Creek, Spring Creek, channel catfish, largemouth bass, smallmouth buffalo fish)
+
+
+#Question 8
+##Textbook Questions
+
+__(a).__ Type of graph: BAR PLOT
+
+
+__(b).__ Types of ROBOTIC LIMBS is the variable measured for each of 106 robot designs.
+
+
+__(c).__ LEGS ONLY is the currently the most used social robot design.
+
+
+__(d).__ Relative frequencies for each categories:
+
+
+>
+  1. None = 15/106 = 0.1415
+  2. Both = 8/106 = 0.0754
+  3. Legs ONLY = 63/106 = 0.5943 
+  4. Wheels ONLY = 20/106 = 0.2359
+
+##Pareto Graph
+```{r}
+pareto<-function(x,mn="Pareto barplot",...){  # x is a vector
+  x.tab=table(x)
+  xx.tab=sort(x.tab, decreasing=TRUE,index.return=FALSE)
+  cumsum(as.vector(xx.tab))->cs
+  length(x.tab)->lenx
+  bp<-barplot(xx.tab,ylim=c(0,max(cs)),las=2)
+  lb<-seq(0,cs[lenx],l=11)
+  axis(side=4,at=lb,labels=paste(seq(0,100,length=11),"%",sep=""),las=1,line=-1,col="Blue",col.axis="Red")
+  for(i in 1:(lenx-1)){
+    segments(bp[i],cs[i],bp[i+1],cs[i+1],col=i,lwd=2)
+  }
+  title(main=mn,...)
+  
+}
+freq=c(15,8,63,20)
+RL=c("None", "Both", "LegsOnly", "WheelsOnly")
+l=rep(RL, freq)
+pareto(l)
+```
+
+#Question 9
+##Pie Chart
+```{r}
+office=12
+windows=32
+explorer=6
+pieData <- c(office,windows,explorer)
+pie(pieData, col=2:4, main="Microsoft Products with Security Issues", labels=c("Office", "Windows", "Explorer"))
+```
+
+##Pareto Diagram
+```{r}
+freq=c(6,8,22,3,11)
+Names=c("Denial of Service","Information Disclosure","Remote Code Execution","Spoofing","Privilege Elevation")
+n=rep(Names,freq)
+pareto(n, mn="Security Bulletins")
+```
+
+
+#Question 10
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
