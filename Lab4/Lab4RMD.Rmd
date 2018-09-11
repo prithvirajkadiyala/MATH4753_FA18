@@ -1,0 +1,127 @@
+---
+title: "Lab 4"
+author: "Prithviraj Kadiyala"
+date: "September 10, 2018"
+output:
+  html_document:
+    fig_caption: yes
+    keep_md: yes
+    number_sections: yes
+    toc: yes
+    toc_float: yes
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+#Task 1
+```{r}
+getwd()
+```
+
+#Task 2
+```{r}
+dird="C:\\Users\\prith\\OneDrive\\Documents\\MATH4753_FA18\\DATAxls\\"
+
+myread=function(csv){
+  fl=paste(dird,csv,sep="")
+  read.table(fl,header=TRUE,sep=",")
+}
+
+spruce.df=myread("SPRUCE.csv")#MS pg478
+with(spruce.df, dput(list(D=BHDiameter,H=Height), 
+                     file="spruce.dat"))
+
+#Last six lines
+tail(spruce.df)
+```
+
+#Task 3
+##Task 3.1 Trendscatter
+```{r}
+library(s20x)
+
+trendscatter(Height~BHDiameter,f=0.5,data=spruce.df)
+```
+
+##Task 3.2 Linear Model Spruce.lm
+```{r}
+spruce.lm=lm(Height~BHDiameter,data=spruce.df)
+summary(spruce.lm)
+```
+
+##Task 3.3 height.res and height.fit
+```{r}
+#residuals  created from the linear model object
+height.res=residuals(spruce.lm)
+
+#fitted values made from the linear model object
+height.fit=fitted(spruce.lm)
+```
+
+##Task 3.4 Plot and Trendscatter plot
+```{r}
+#Make the plot using the plot function 
+plot(height.fit,height.res, xlab="Fitted", ylab="Residuals")
+
+# Put a lowess smoother through res vs fitted
+trendscatter( height.fit,height.res, xlab="Fitted", ylab="Residuals")
+```
+
+```
+The plot with Residuals and Fitted shows us a Quadractic graph while the plot earlier shows a gradually rising graph and flat towards the end.
+
+```
+
+##Task 3.5 plot Residuals
+```{r}
+# Quick way to make a residual plot
+plot(spruce.lm, which =1)
+```
+
+##Task 3.6 Check Normality
+```{r}
+# Two plots testing normality
+normcheck(spruce.lm,shapiro.wilk = TRUE)
+```
+
+```
+P-Value = 0.29
+
+Since the value is smaller, there is  higher evidence towards the Null hypothesis.
+```
+
+##Task 3.7 Conclusion
+```
+Applying the straight line to this data set is valid because the mode of the residual bar graph is 0 which means that there is no residual because the theoretical and actual were the same.
+```
+
+#Task 4
+##Task 4.1 create quad.lm
+```{r}
+# Creating Quad.lm Linear model for quadratic equation
+quad.lm=lm(Height~BHDiameter + I(BHDiameter^2),data=spruce.df)
+summary(quad.lm)
+```
+
+##Task 4.2 Plot with Quadratic curve
+```{r}
+#add to the scatter plot
+plot(Height~BHDiameter,bg="Blue",pch=21,cex=1.2,
+ylim=c(0,max(Height)),xlim=c(0,max(BHDiameter)), 
+main="Spruce height prediction",data=spruce.df)
+
+myplot=function(x){
+ 0.86089580 +1.46959217*x  -0.02745726*x^2
+ }
+ 
+ #Or more general method
+myplot=function(x){
+ quad.lm$coef[1] +quad.lm$coef[2]*x  + quad.lm$coef[3]*x^2
+ } 
+ 
+curve(myplot, lwd=2, col="green3",add=TRUE)
+```
+
