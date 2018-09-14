@@ -187,23 +187,23 @@ mtbe[ind,]
 
 ```
 ##       pH SpConduct DissOxy RoadsPct IndPct UrbanPct DevPct WellClass
-## 9   7.55    1077.0    3.93     1.50   0.00    16.79  16.79   Private
-## 207 7.62     579.6    2.57     2.50   0.00    25.85  32.34    Public
-## 222 7.75     863.7    0.50     3.17  14.92    41.62  47.58    Public
+## 146 7.44     144.0    0.39     2.95   0.00    40.82  43.10    Public
 ## 71  6.26    1130.0    6.99     4.20   1.37    47.01  47.01   Private
-## 218 7.69     400.8    1.48     2.52  17.61    23.11  24.88    Public
-##     Aquifier   Depth SafeYld Distance MTBE.Detect MTBE.Level HouseDen
-## 9    Bedrock      NA      NA  1672.33      Detect       1.32    86.89
-## 207  Bedrock  45.720      NA  1307.40      Detect       0.37   136.41
-## 222  Bedrock  45.720      NA  1358.67 Below Limit       0.20   216.79
-## 71   Bedrock 103.632      NA  1579.30 Below Limit       0.20   431.12
-## 218  Bedrock      NA      NA   418.25 Below Limit       0.20   183.11
+## 128 6.28     360.3    2.98     2.33   0.00    27.50  29.67    Public
+## 80  7.13     536.6    0.40     4.80   2.15    56.99  56.99   Private
+## 17  8.14     209.3    0.59     2.93   0.00    49.47  49.47   Private
+##     Aquifier    Depth  SafeYld Distance MTBE.Detect MTBE.Level HouseDen
+## 146  Bedrock 200.5584 105.9803   405.78      Detect       1.29   314.98
+## 71   Bedrock 103.6320       NA  1579.30 Below Limit       0.20   431.12
+## 128  Bedrock  77.7240 151.4005  1978.78      Detect       0.35   221.41
+## 80   Bedrock  91.4400       NA  2407.70      Detect       1.60   215.44
+## 17   Bedrock  92.9640       NA  2652.00 Below Limit       0.20   159.78
 ##     PopDen
-## 9    26.61
-## 207   0.00
-## 222  64.02
+## 146 224.98
 ## 71  130.34
-## 218  58.01
+## 128  92.23
+## 80   77.05
+## 17    0.00
 ```
 
 ```r
@@ -280,36 +280,36 @@ eq[ind,]
 
 ```
 ##      YEAR MONTH DAY HOUR MINUTE MAGNITUDE
-## 1089 1994     1  22    6     41       1.9
-## 1400 1994     1  23   21     42       1.7
-## 816  1994     1  21    1     38       2.1
-## 2363 1994     1  29   14      2       1.7
-## 1531 1994     1  24   14     59       2.0
-## 2411 1994     2   1    7     13       1.5
-## 343  1994     1  18   21     14       3.1
-## 212  1994     1  18    2     26       2.9
-## 1027 1994     1  21   22     31       1.8
-## 593  1994     1  20    2     45       2.6
-## 585  1994     1  20    2     22       2.9
-## 5    1994     1  17   12     36       3.8
-## 650  1994     1  20    8     41       2.2
-## 1180 1994     1  22   16     46       2.5
-## 460  1994     1  19   14     44       2.2
-## 1155 1994     1  22   14     40       1.6
-## 1070 1994     1  22    3     49       1.9
-## 1238 1994     1  22   22     53       1.8
-## 2462 1994     2   1   20     29       2.0
-## 438  1994     1  19   11     32       2.3
-## 1648 1994     1  25    9     13       1.6
-## 80   1994     1  17   15     24       3.5
-## 251  1994     1  18    9     47       2.7
-## 277  1994     1  18   13     33       3.1
-## 2143 1994     1  28   16     24       1.6
-## 380  1994     1  19    3     31       2.8
-## 1403 1994     1  23   21     58       1.9
-## 339  1994     1  18   20     37       2.6
-## 1387 1994     1  23   19     16       1.7
-## 2394 1994     2   1    2     13       1.8
+## 1709 1994     1  25   16     23       0.2
+## 1448 1994     1  24    3     44       1.9
+## 1111 1994     1  22    9      3       3.1
+## 2178 1994     1  28   22      2       1.9
+## 594  1994     1  20    2     57       2.4
+## 249  1994     1  18    9     41       3.7
+## 1992 1994     1  27   11     45       1.8
+## 883  1994     1  21    8     43       2.0
+## 1368 1994     1  23   16     57       2.2
+## 449  1994     1  19   13     14       1.9
+## 972  1994     1  21   17     41       2.2
+## 1623 1994     1  25    5     25       2.2
+## 769  1994     1  20   20     45       2.7
+## 2471 1994     2   1   22     37       1.6
+## 2141 1994     1  28   15     59       1.2
+## 1937 1994     1  27    2     44       1.3
+## 1428 1994     1  24    1     39       1.7
+## 808  1994     1  21    0     57       2.1
+## 1809 1994     1  26    7     38       1.3
+## 1729 1994     1  25   19     54       1.6
+## 328  1994     1  18   18     35       3.4
+## 1361 1994     1  23   15     59       3.2
+## 2341 1994     1  31    9     35       2.6
+## 2277 1994     1  29   15     24       2.0
+## 1131 1994     1  22   12     15       1.7
+## 1658 1994     1  25   10     21       3.2
+## 1712 1994     1  25   17      3       1.6
+## 470  1994     1  19   15     46       2.2
+## 437  1994     1  19   11     29       2.1
+## 966  1994     1  21   17     21       1.8
 ```
 
 ```r
@@ -409,15 +409,606 @@ pareto(n, mn="Security Bulletins")
 ![](Assignment1Rmd_files/figure-html/unnamed-chunk-9-1.png)<!-- -->
 
 
+#Question 10
+
+```r
+swd=read.csv("SWDEFECTS.csv")
+head(swd) 
+```
+
+```
+##   Mloc Mvg Mevg Mivg   Hn  Hvol Hpgmlen Hdiff Hintell Heffort   Hb Htime
+## 1  1.1 1.4  1.4  1.4  1.3   1.3    1.30  1.30    1.30       1 1.30     1
+## 2  1.0 1.0  1.0  1.0  1.0   1.0    1.00  1.00    1.00       1 1.00     1
+## 3 24.0 5.0  1.0  3.0 63.0 309.1    0.11  9.50   32.54    2937 0.10   163
+## 4 20.0 4.0  4.0  2.0 47.0 215.5    0.06 16.00   13.47    3448 0.07   192
+## 5 24.0 6.0  6.0  2.0 72.0 346.1    0.06 17.33   19.97    6000 0.12   333
+## 6 24.0 6.0  6.0  2.0 72.0 346.1    0.06 17.33   19.97    6000 0.12   333
+##   Hloc Hcomm Hblank loc.comm uniOp uniOpnd totOp totOpnd brnchcnt defect
+## 1    2     2      2        2   1.2     1.2   1.2     1.2      1.4  FALSE
+## 2    1     1      1        1   1.0     1.0   1.0     1.0      1.0   TRUE
+## 3    1     0      6        0  15.0    15.0  44.0    19.0      9.0  FALSE
+## 4    0     0      3        0  16.0     8.0  31.0    16.0      7.0  FALSE
+## 5    0     0      3        0  16.0    12.0  46.0    26.0     11.0  FALSE
+## 6    0     0      3        0  16.0    12.0  46.0    26.0     11.0  FALSE
+##   predict.vg.10 predict.evg.14.5 predict.ivg.9.2 predict.loc.50
+## 1            no               no              no             no
+## 2            no               no              no             no
+## 3            no               no              no             no
+## 4            no               no              no             no
+## 5            no               no              no             no
+## 6            no               no              no             no
+```
+
+```r
+library(plotrix) 
+```
+
+```
+## Warning: package 'plotrix' was built under R version 3.4.4
+```
+
+```r
+tab=table(swd$defect) 
+rtab=tab/sum(tab) 
+round(rtab,2) 
+```
+
+```
+## 
+## FALSE  TRUE 
+##   0.9   0.1
+```
+
+```r
+pie3D(rtab,labels=list("OK","Defective"),main="pie plot of SWD")
+```
+
+![](Assignment1Rmd_files/figure-html/unnamed-chunk-10-1.png)<!-- -->
+
+#Question 11
+
+![](Voltage_Tabulation.jpg){ width=80% }
+
+##1Frequency Histogram
+
+```r
+voltage.df=read.csv("VOLTAGE.csv")
+new<-subset(voltage.df,subset=LOCATION=="OLD") 
+new$VOLTAGE->vtn 
+lept<-min(vtn)-0.05 
+rept<-max(vtn)+0.05 
+rnge<-rept-lept 
+inc<-rnge/9 
+seq(lept, rept,by=inc)->cl 
+cvtn<-cut(vtn,breaks=cl)
+new.tab1=table(cvtn)
+barplot(new.tab1,space=0,main="Frequency Histogram(OLD)",las=2) 
+```
+
+![](Assignment1Rmd_files/figure-html/unnamed-chunk-11-1.png)<!-- -->
 
 
+##2
+
+```r
+vol=read.csv("VOLTAGE.csv")
+ovol=with(vol,vol[LOCATION=="OLD",])
+v=ovol$VOLTAGE
+stem(v)
+```
+
+```
+## 
+##   The decimal point is at the |
+## 
+##    8 | 1
+##    8 | 778
+##    9 | 
+##    9 | 677888899
+##   10 | 0000000011122333
+##   10 | 6
+```
+
+##3
+
+```r
+voltage.df=read.csv("VOLTAGE.csv")
+new<-subset(voltage.df,subset=LOCATION=="NEW") 
+new$VOLTAGE->vtn 
+lept<-min(vtn)-0.05 
+rept<-max(vtn)+0.05 
+rnge<-rept-lept 
+inc<-rnge/9 
+seq(lept, rept,by=inc)->cl 
+cvtn<-cut(vtn,breaks=cl) 
+new.tab2=table(cvtn) 
+barplot(new.tab2,space=0,main="Frequency Histogram(NEW)",las=2) 
+```
+
+![](Assignment1Rmd_files/figure-html/unnamed-chunk-13-1.png)<!-- -->
+
+##4
+
+```r
+layout(matrix(1:2, nr=1,nc=2))
+barplot(new.tab1,space=0,main="Frequency Histogram(OLD)",las=2) 
+barplot(new.tab2,space=0,main="Frequency Histogram(NEW)",las=2) 
+```
+
+![](Assignment1Rmd_files/figure-html/unnamed-chunk-14-1.png)<!-- -->
+
+##5 Old Data & New Data
+**Old Data**
+
+```r
+ovol=with(voltage.df,voltage.df[LOCATION=="OLD",])
+oldv=ovol$VOLTAGE
+mean(oldv)
+```
+
+```
+## [1] 9.803667
+```
+
+```r
+median(oldv)
+```
+
+```
+## [1] 9.975
+```
+
+```r
+getmode <- function(v) {
+   uniqv <- unique(v)
+   uniqv[which.max(tabulate(match(v, uniqv)))]
+}
+getmode(oldv)
+```
+
+```
+## [1] 9.98
+```
+
+**New Data**
+
+```r
+ovol=with(voltage.df,voltage.df[LOCATION=="NEW",])
+newv=ovol$VOLTAGE
+mean(newv)
+```
+
+```
+## [1] 9.422333
+```
+
+```r
+median(newv)
+```
+
+```
+## [1] 9.455
+```
+
+```r
+getmode <- function(v) {
+   uniqv <- unique(v)
+   uniqv[which.max(tabulate(match(v, uniqv)))]
+}
+getmode(newv)
+```
+
+```
+## [1] 8.82
+```
+
+##6
+
+```r
+zscore=(10.50-mean(oldv))/sd(oldv)
+zscore
+```
+
+```
+## [1] 1.287324
+```
+
+##7
+
+```r
+newzscore=(10.50-mean(newv))/sd(newv)
+newzscore
+```
+
+```
+## [1] 2.25041
+```
+
+##8
+
+The new location because the z-score is farther away from the mean, encompassing more data.
+
+##9
+
+```r
+with(voltage.df,boxplot(oldv,ylab="OLD",col="Blue",notch=TRUE))
+```
+
+![](Assignment1Rmd_files/figure-html/unnamed-chunk-19-1.png)<!-- -->
+
+There are 4 outliers
+
+##10
+
+```r
+z=scale(oldv)
+#Possibe outliers
+oldv[abs(z)>=2 & abs(z)<=3]
+```
+
+```
+## [1] 8.72 8.72
+```
+
+```r
+#Outliers
+oldv[abs(z)> 3]
+```
+
+```
+## [1] 8.05
+```
+
+##11
+
+```r
+with(voltage.df,boxplot(newv,ylab="NEW",col="Red",notch=TRUE))
+```
+
+![](Assignment1Rmd_files/figure-html/unnamed-chunk-21-1.png)<!-- -->
+
+There are no outliers here.
+
+##12
+
+```r
+z=scale(newv)
+#Possibe outliers
+newv[abs(z)>=2 & abs(z)<=3]
+```
+
+```
+## numeric(0)
+```
+
+```r
+#Outliers
+newv[abs(z)> 3]
+```
+
+```
+## numeric(0)
+```
+
+##13
+
+```r
+layout(matrix(1:2, nr=1,nc=2))
+boxplot(oldv,col="Blue",main="Old Location",ylab="Volts", notch=TRUE)
+boxplot(newv,col="RED",main="New Location",ylab="Volts", notch=TRUE)
+```
+
+![](Assignment1Rmd_files/figure-html/unnamed-chunk-23-1.png)<!-- -->
+
+##14
+
+In old location, we have a very narrow distribution and contain outliers. New Location has a broader disribution and contains no outliers. Median voltage is more at the old location than new location.
 
 
+#Question 12
+
+```r
+rpipe=read.csv("ROUGHPIPE.csv")
+head(rpipe)
+```
+
+```
+##   ROUGH
+## 1  1.72
+## 2  2.57
+## 3  2.50
+## 4  2.64
+## 5  2.16
+## 6  1.26
+```
+
+```r
+m <- mean(rpipe$ROUGH)
+m
+```
+
+```
+## [1] 1.881
+```
+
+```r
+sd <- sd(rpipe$ROUGH)
+sd
+```
+
+```
+## [1] 0.5239114
+```
+
+```r
+n <- length(rpipe$ROUGH)
+n
+```
+
+```
+## [1] 20
+```
+
+```r
+error <- qnorm(0.95)*sd/sqrt(n)
+error
+```
+
+```
+## [1] 0.1926949
+```
+
+```r
+left <- m-error
+right <- m+error
+left
+```
+
+```
+## [1] 1.688305
+```
+
+```r
+right
+```
+
+```
+## [1] 2.073695
+```
+
+The interval which contains 95% of all the coated pipe roughness is (1.6883051,2.0736949)
+
+#Question 13
+
+```r
+gobi=read.csv("GOBIANTS.csv")
+head(gobi)
+```
+
+```
+##   Site      Region Rain Temp PlantCov AntSpecies Diversity
+## 1    1 Dry Steppe   196  5.7       40          3      0.89
+## 2    2 Dry Steppe   196  5.7       52          3      0.83
+## 3    3 Dry Steppe   179  7.0       40         52      1.31
+## 4    4 Dry Steppe   197  8.0       43          7      1.48
+## 5    5 Dry Steppe   149  8.5       27          5      0.97
+## 6    6 Gobi Desert  112 10.7       30         49      0.46
+```
+
+```r
+mean(gobi$AntSpecies)
+```
+
+```
+## [1] 12.81818
+```
+
+```r
+median(gobi$AntSpecies)
+```
+
+```
+## [1] 5
+```
+
+```r
+getmode <- function(v) {
+   uniqv <- unique(v)
+   uniqv[which.max(tabulate(match(v, uniqv)))]
+}
+getmode(gobi$AntSpecies)
+```
+
+```
+## [1] 5
+```
+
+The average number of species found per site is 12.8181818.
+
+The middle number of species found per site is 5.
+
+The mode is 5.
+
+On Average, 12.8181818 species were attracted to the 11 study sites. The middle values from this observation was 5 species. Finally, 5 was the most occuring number of species.
+
+##b
+
+Median because median gives the middle number when the set of measurements are arranged in order.
+
+##c DrySteppe
+
+```r
+ds=with(gobi,gobi[Region=="Dry Steppe ",])
+
+drysteppe = ds$PlantCov
+mean(drysteppe)
+```
+
+```
+## [1] 40.4
+```
+
+```r
+median(drysteppe)
+```
+
+```
+## [1] 40
+```
+
+```r
+getmode <- function(v) {
+   uniqv <- unique(v)
+   uniqv[which.max(tabulate(match(v, uniqv)))]
+}
+getmode(drysteppe)
+```
+
+```
+## [1] 40
+```
+
+##d Gobi Desert
+
+```r
+ds=with(gobi,gobi[Region=="Gobi Desert",])
+
+plant = ds$PlantCov
+mean(plant)
+```
+
+```
+## [1] 28
+```
+
+```r
+median(plant)
+```
+
+```
+## [1] 26
+```
+
+```r
+getmode <- function(v) {
+   uniqv <- unique(v)
+   uniqv[which.max(tabulate(match(v, uniqv)))]
+}
+getmode(plant)
+```
+
+```
+## [1] 30
+```
+
+##e
+Yes, the total plant cover percentage is different for the two regions as the mean are different.
 
 
+#Question 14
+##a
+
+```r
+gxy=read.csv("GALAXY2.csv")
+head(gxy)
+```
+
+```
+##   VELOCITY
+## 1    22922
+## 2    20210
+## 3    21911
+## 4    19225
+## 5    18792
+## 6    21993
+```
+
+```r
+hist(gxy$VELOCITY,col=1:7)
+```
+
+![](Assignment1Rmd_files/figure-html/unnamed-chunk-28-1.png)<!-- -->
+
+##b
+
+There appears to be two modes in the graph. So there is evidence to support double cluster theory.
 
 
+##c
 
+```r
+mean(gxy$VELOCITY)
+```
+
+```
+## [1] 21448.25
+```
+
+```r
+sd(gxy$VELOCITY)
+```
+
+```
+## [1] 1764.103
+```
+
+```r
+#For cluster 1
+gxya=with(gxy,gxy[VELOCITY<21000,])
+mean(gxya)
+```
+
+```
+## [1] 19462.24
+```
+
+```r
+sd(gxya)
+```
+
+```
+## [1] 532.2868
+```
+
+```r
+#For cluster 2
+gxyb=with(gxy,gxy[VELOCITY>=21000,])
+mean(gxyb)
+```
+
+```
+## [1] 22838.47
+```
+
+```r
+sd(gxyb)
+```
+
+```
+## [1] 560.9767
+```
+
+##d
+
+This galaxy belongs to cluster A1775A as it is near to the mean of the cluster A1775A
+
+#Question 15
+
+```r
+library(ggplot2)
+```
+
+```
+## Warning: package 'ggplot2' was built under R version 3.4.4
+```
+
+```r
+p10 = qplot(RIVER,LENGTH,data=DDT,fill=SPECIES,geom="boxplot")
+p10 + labs(title = "Prithviraj Kadiyala")
+```
+
+![](Assignment1Rmd_files/figure-html/unnamed-chunk-30-1.png)<!-- -->
 
 
 

@@ -213,15 +213,273 @@ pareto(n, mn="Security Bulletins")
 
 
 #Question 10
+```{r}
+swd=read.csv("SWDEFECTS.csv")
+head(swd) 
+library(plotrix) 
+tab=table(swd$defect) 
+rtab=tab/sum(tab) 
+round(rtab,2) 
+pie3D(rtab,labels=list("OK","Defective"),main="pie plot of SWD")
+```
+
+#Question 11
+
+![](Voltage_Tabulation.jpg){ width=80% }
+
+##1Frequency Histogram
+```{r}
+voltage.df=read.csv("VOLTAGE.csv")
+new<-subset(voltage.df,subset=LOCATION=="OLD") 
+new$VOLTAGE->vtn 
+lept<-min(vtn)-0.05 
+rept<-max(vtn)+0.05 
+rnge<-rept-lept 
+inc<-rnge/9 
+seq(lept, rept,by=inc)->cl 
+cvtn<-cut(vtn,breaks=cl)
+new.tab1=table(cvtn)
+barplot(new.tab1,space=0,main="Frequency Histogram(OLD)",las=2) 
+```
 
 
+##2
+```{r}
+vol=read.csv("VOLTAGE.csv")
+ovol=with(vol,vol[LOCATION=="OLD",])
+v=ovol$VOLTAGE
+stem(v)
+```
+
+##3
+```{r}
+voltage.df=read.csv("VOLTAGE.csv")
+new<-subset(voltage.df,subset=LOCATION=="NEW") 
+new$VOLTAGE->vtn 
+lept<-min(vtn)-0.05 
+rept<-max(vtn)+0.05 
+rnge<-rept-lept 
+inc<-rnge/9 
+seq(lept, rept,by=inc)->cl 
+cvtn<-cut(vtn,breaks=cl) 
+new.tab2=table(cvtn) 
+barplot(new.tab2,space=0,main="Frequency Histogram(NEW)",las=2) 
+```
+
+##4
+```{r}
+layout(matrix(1:2, nr=1,nc=2))
+barplot(new.tab1,space=0,main="Frequency Histogram(OLD)",las=2) 
+barplot(new.tab2,space=0,main="Frequency Histogram(NEW)",las=2) 
+```
+
+##5 Old Data & New Data
+**Old Data**
+```{r}
+ovol=with(voltage.df,voltage.df[LOCATION=="OLD",])
+oldv=ovol$VOLTAGE
+mean(oldv)
+median(oldv)
+getmode <- function(v) {
+   uniqv <- unique(v)
+   uniqv[which.max(tabulate(match(v, uniqv)))]
+}
+getmode(oldv)
+```
+
+**New Data**
+```{r}
+ovol=with(voltage.df,voltage.df[LOCATION=="NEW",])
+newv=ovol$VOLTAGE
+mean(newv)
+median(newv)
+getmode <- function(v) {
+   uniqv <- unique(v)
+   uniqv[which.max(tabulate(match(v, uniqv)))]
+}
+getmode(newv)
+```
+
+##6
+```{r}
+zscore=(10.50-mean(oldv))/sd(oldv)
+zscore
+```
+
+##7
+```{r}
+newzscore=(10.50-mean(newv))/sd(newv)
+newzscore
+```
+
+##8
+
+The new location because the z-score is farther away from the mean, encompassing more data.
+
+##9
+```{r}
+with(voltage.df,boxplot(oldv,ylab="OLD",col="Blue",notch=TRUE))
+```
+
+There are 4 outliers
+
+##10
+```{r}
+z=scale(oldv)
+#Possibe outliers
+oldv[abs(z)>=2 & abs(z)<=3]
+
+#Outliers
+oldv[abs(z)> 3]
+```
+
+##11
+```{r}
+with(voltage.df,boxplot(newv,ylab="NEW",col="Red",notch=TRUE))
+```
+
+There are no outliers here.
+
+##12
+```{r}
+z=scale(newv)
+#Possibe outliers
+newv[abs(z)>=2 & abs(z)<=3]
+
+#Outliers
+newv[abs(z)> 3]
+```
+
+##13
+```{r}
+layout(matrix(1:2, nr=1,nc=2))
+boxplot(oldv,col="Blue",main="Old Location",ylab="Volts", notch=TRUE)
+boxplot(newv,col="RED",main="New Location",ylab="Volts", notch=TRUE)
+```
+
+##14
+
+In old location, we have a very narrow distribution and contain outliers. New Location has a broader disribution and contains no outliers. Median voltage is more at the old location than new location.
 
 
+#Question 12
+```{r}
+rpipe=read.csv("ROUGHPIPE.csv")
+head(rpipe)
+
+m <- mean(rpipe$ROUGH)
+m
+sd <- sd(rpipe$ROUGH)
+sd
+n <- length(rpipe$ROUGH)
+n
+error <- qnorm(0.95)*sd/sqrt(n)
+error
+left <- m-error
+right <- m+error
+left
+right
+```
+
+The interval which contains 95% of all the coated pipe roughness is (`r left`,`r right`)
+
+#Question 13
+```{r}
+gobi=read.csv("GOBIANTS.csv")
+head(gobi)
+
+mean(gobi$AntSpecies)
+median(gobi$AntSpecies)
+getmode <- function(v) {
+   uniqv <- unique(v)
+   uniqv[which.max(tabulate(match(v, uniqv)))]
+}
+getmode(gobi$AntSpecies)
+```
+
+The average number of species found per site is `r mean(gobi$AntSpecies)`.
+
+The middle number of species found per site is `r median(gobi$AntSpecies)`.
+
+The mode is `r getmode(gobi$AntSpecies)`.
+
+On Average, `r mean(gobi$AntSpecies)` species were attracted to the 11 study sites. The middle values from this observation was `r median(gobi$AntSpecies)` species. Finally, `r getmode(gobi$AntSpecies)` was the most occuring number of species.
+
+##b
+
+Median because median gives the middle number when the set of measurements are arranged in order.
+
+##c DrySteppe
+```{r}
+ds=with(gobi,gobi[Region=="Dry Steppe ",])
+
+drysteppe = ds$PlantCov
+mean(drysteppe)
+median(drysteppe)
+getmode <- function(v) {
+   uniqv <- unique(v)
+   uniqv[which.max(tabulate(match(v, uniqv)))]
+}
+getmode(drysteppe)
+```
+
+##d Gobi Desert
+```{r}
+ds=with(gobi,gobi[Region=="Gobi Desert",])
+
+plant = ds$PlantCov
+mean(plant)
+median(plant)
+getmode <- function(v) {
+   uniqv <- unique(v)
+   uniqv[which.max(tabulate(match(v, uniqv)))]
+}
+getmode(plant)
+```
+
+##e
+Yes, the total plant cover percentage is different for the two regions as the mean are different.
 
 
+#Question 14
+##a
+```{r}
+gxy=read.csv("GALAXY2.csv")
+head(gxy)
+hist(gxy$VELOCITY,col=1:7)
+```
+
+##b
+
+There appears to be two modes in the graph. So there is evidence to support double cluster theory.
 
 
+##c
+```{r}
+mean(gxy$VELOCITY)
+sd(gxy$VELOCITY)
 
+#For cluster 1
+gxya=with(gxy,gxy[VELOCITY<21000,])
+mean(gxya)
+sd(gxya)
+
+#For cluster 2
+gxyb=with(gxy,gxy[VELOCITY>=21000,])
+mean(gxyb)
+sd(gxyb)
+```
+
+##d
+
+This galaxy belongs to cluster A1775A as it is near to the mean of the cluster A1775A
+
+#Question 15
+```{r}
+library(ggplot2)
+p10 = qplot(RIVER,LENGTH,data=DDT,fill=SPECIES,geom="boxplot")
+p10 + labs(title = "Prithviraj Kadiyala")
+```
 
 
 
