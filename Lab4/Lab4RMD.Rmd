@@ -90,7 +90,7 @@ normcheck(spruce.lm,shapiro.wilk = TRUE)
 ```
 P-Value = 0.29
 
-Since the value is smaller, there is  higher evidence towards the Null hypothesis.
+Since the value is smaller, there is  higher evidence towards the Null hypothesis. But not high enough to disregard the hypothesis.
 ```
 
 ##Task 3.7 Conclusion
@@ -124,4 +124,131 @@ myplot=function(x){
  
 curve(myplot, lwd=2, col="green3",add=TRUE)
 ```
+
+##Task 4.3 Fitted Quadratic
+```{r}
+# Make quad.fit, a vector of fitted values
+quad.fit = fitted(quad.lm) 
+
+# Find the residuals for quadratic fit 
+height.res_2 = residuals(quad.lm)
+
+# Plot the residuals vs fitted values.
+plot(height.res_2~quad.fit,bg="Blue",pch=21, cex=1.2,
+     ylim=c(0,1.1*max(height.res_2)),xlim=c(0,1.1*max(quad.fit)),
+     main="Residuals vs Fitted", ylab="Residuals", xlab="Fitted values")
+```
+
+##Task 4.4 Normcheck
+```{r}
+
+# construct QQ plot 
+normcheck(quad.lm,shapiro.wilk = TRUE)
+```
+
+P-Value is 0.684.
+
+This value is very much greater than the linear model making its case against Null hypothesis.
+
+#Task 5
+##Summarize Quad.lm
+```{r}
+#summarize quad.lm
+summary(quad.lm)
+```
+
+The value of $\hat\beta_0$ = 0.8609
+
+The value of $\hat\beta_1$ = 1.4696
+
+The value of $\hat\beta_2$ = -0.0274
+
+
+##Interval Estimates
+```{r}
+#Make interval estimates
+ciReg(quad.lm)
+```
+
+##Height Prediction
+```{r}
+#predict height of spruce tree with quad.lm when diamater is 15,18 and 20cm
+predict(quad.lm, data.frame(BHDiameter=c(15,18,20)))
+
+# prediction using linear model spruce.lm when diameter is 15,18 and 20cm
+predict(spruce.lm, data.frame(BHDiameter = c(15,18,20)))
+```
+
+
+##Multiple R-squared comparison
+
+Multiple R-squared value for Quadratic model is 0.7741
+
+Multiple R-squared value for Linear model is 0.6569
+
+Multiple R-squared gives us the measure of variability.
+
+**The Quadratic model is better here because it has more variability.**
+
+**Quadratic model has more variability compared to linear model. We can say this by looking at multiple r-squared values above**
+
+
+##Anova Comparison
+```{r}
+anova(spruce.lm,quad.lm)
+```
+
+##Calculate TSS, MSS and RSS
+```{r}
+height.qfit=fitted(quad.lm)
+height.qfit
+
+#  RSS=residual sum of squares
+RSS=with(spruce.df,sum((Height-height.qfit)^2))
+RSS
+
+# MSS=model sum of squares
+MSS=with(spruce.df,sum((height.qfit-mean(Height))^2))
+MSS
+
+# TSS=total sum of squares
+TSS=with(spruce.df,sum((Height-mean(Height))^2))
+TSS 
+
+# Calculate MSS/TSS, and interpret it!
+MSS/TSS
+```
+
+#Task 6
+##Cooks plot
+```{r}
+cooks20x(quad.lm)
+```
+
+We can say that cooks distance is used to find the outliers in observations for predictor variables. It also gives the influence of all the observations on a fitted response values. If the observation using cooks distance is greater than thrice of the mean cooks distance might be an outlier.
+
+##Highest cooks value removed
+```{r}
+quad2.lm=lm(Height~BHDiameter + I(BHDiameter^2) , data=spruce.df[-24,])
+summary(quad2.lm)
+summary(quad.lm)
+```
+
+
+We can conclude that quad2.lm which has highest cooks datum removed gives a better estimate when compared to quad.lm
+
+When the cooks distance highest datum is removed from the data frame, the estimates will be improved.
+
+
+
+
+
+
+
+
+
+
+
+
+
 
