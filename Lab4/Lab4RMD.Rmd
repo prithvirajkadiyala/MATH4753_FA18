@@ -239,6 +239,34 @@ We can conclude that quad2.lm which has highest cooks datum removed gives a bett
 
 When the cooks distance highest datum is removed from the data frame, the estimates will be improved.
 
+#Bonus Question
+```{r}
+#add to the scatter plot
+plot(Height~BHDiameter,bg="Blue",pch=21,cex=1.2,
+ylim=c(0,max(Height)),xlim=c(0,max(BHDiameter)), 
+main="Spruce height prediction",data=spruce.df)
+
+myplot=function(x){
+ result = 0.86089580 +1.46959217*x  -0.02745726*x^2
+ result
+ return (result)
+ }
+ 
+#For segments
+myplot2=function(){
+  n = 36
+  mat <- matrix(ncol=1, nrow=n)
+  for (x in 1:n){
+    mat[x] = quad.lm$coef[1] +quad.lm$coef[2]*(spruce.df$BHDiameter[x])  + quad.lm$coef[3]*(spruce.df$BHDiameter[x])^2
+  }
+  return(mat)
+} 
+curveplot = myplot2()
+curve(myplot, lwd=2, col="green3",add=TRUE)
+with(spruce.df,{segments(BHDiameter,Height,BHDiameter,curveplot)})
+with(spruce.df,arrows(5, 17.3, 11.4, 17.3))
+with(spruce.df,text(5,18,"Highest Cook's distance",col="blue"))
+```
 
 
 

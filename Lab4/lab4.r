@@ -264,3 +264,96 @@ anova(spruce2.lm)
 anova(spruce.lm,spruce2.lm)
 MSS
 RSS
+
+
+
+
+
+
+mat <- matrix(ncol=2, nrow=n)
+
+for (i in 1:n) {
+  var1 <- function_one(i,par1)
+  var2 <- function_two(i,par2)
+  mat[i,] <- c(var1,var2)
+}
+
+yhat=with(spruce.df,predict(spruce.lm,data.frame(BHDiameter)))
+yhat
+
+
+
+
+
+summary(quad.lm)
+myplot2=function(){
+  n = 36
+  mat <- matrix(ncol=1, nrow=n)
+  for (x in 1:n){
+    mat[x,] = quad.lm$coef[1] +quad.lm$coef[2]*x  + quad.lm$coef[3]*x^2
+  }
+  return(mat)
+} 
+curveplot = myplot2()
+curveplot
+curve(myplot, lwd=2, col="green3",add=TRUE)
+with(spruce.df,{
+segments(BHDiameter,Height,BHDiameter,curveplot)
+})
+spruce.df$Height
+spruce.df$BHDiameter
+segment(BHDiameter,19.2,BHDiameter,20.23)
+
+
+
+
+
+
+
+
+
+
+#add to the scatter plot
+plot(Height~BHDiameter,bg="Blue",pch=21,cex=1.2,
+     ylim=c(0,max(Height)),xlim=c(0,max(BHDiameter)), 
+     main="Spruce height prediction",data=spruce.df)
+
+myplot=function(x){
+  result = 0.86089580 +1.46959217*x  -0.02745726*x^2
+  result
+  return (result)
+}
+
+#Or more general method
+myplot2=function(){
+  n = 36
+  mat <- matrix(ncol=1, nrow=n)
+  for (x in 1:n){
+    mat[x] = quad.lm$coef[1] +quad.lm$coef[2]*x  + quad.lm$coef[3]*x^2
+  }
+  return(mat)
+} 
+curveplot = myplot2()
+curveplot
+curve(myplot, lwd=2, col="green3",add=TRUE)
+with(spruce.df,{segments(BHDiameter,19.2,BHDiameter,20.23)})
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
