@@ -105,3 +105,40 @@ pbinom(1,5,0.25)
 1-pbinom(8,15,1/5)
 pbinom(2999,10000,1/5)
 
+
+
+tablecreate = function(d1){
+  swd=read.csv("swdefects.csv")
+  head(swd)
+  tab=with(swd, table(d1,defect))
+  barplot(tab, beside=TRUE, leg=TRUE)
+  tab2=addmargins(tab)
+  tab2
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

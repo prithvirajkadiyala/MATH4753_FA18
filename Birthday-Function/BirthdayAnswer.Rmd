@@ -1,0 +1,46 @@
+---
+title: "Birthday Answer"
+author: "Prithviraj Kadiyala"
+date: "September 17, 2018"
+output:
+  html_document:
+    fig_caption: yes
+    keep_md: yes
+    number_sections: yes
+    toc: yes
+    toc_float: yes
+    theme: spacelab
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+#Function Completed
+```{r}
+mybirthday = function(n)
+{
+  #Denominator is 365^n
+  logpAc = lfactorial(365)-lfactorial(365-(1:n))-(1:n)*log(365)
+  pAc=exp(logpAc)
+  #p=1-q
+  pA = 1- pAc
+  
+  names(pA)=1:n
+  names(pA)
+  
+  #number of colors=Number of elements in pA
+  pie(pA, col=rainbow(length(pA)))
+  
+  #rounding the decimals to 2 places
+  mat = matrix(c(round(pA,2)), nr=n, nc=1, byrow=FALSE,dimnames=list("Number in room"=1:n, c("pA")))
+  as.table(mat)
+}
+
+table = mybirthday(32)
+```
+
+#Table
+```{r}
+table
+```

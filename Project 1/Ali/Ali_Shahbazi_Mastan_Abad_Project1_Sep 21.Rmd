@@ -1,0 +1,498 @@
+---
+title: "Project 1"
+author: "Ali Shahbazi Mastan Abad"
+date: "`r Sys.Date()`"
+output:
+  html_document:
+    code_folding: show
+    csl: biomed-central.csl
+    df_print: paged
+    fig_caption: yes
+    fig_height: 6
+    fig_width: 7
+    number_sections: yes
+    theme: journal
+    toc: yes
+    toc_float: yes
+  word_document:
+    toc: yes
+    toc_depth: '4'
+  pdf_document:
+    df_print: kable
+    fig_caption: yes
+    fig_height: 6
+    fig_width: 7
+    highlight: tango
+    toc: yes
+    toc_depth: 4
+    
+#bibliography: project.bib
+abstract: This project is all about analysing the SWDEFECTS file using R and probability theory. You will need to change the headings to reflect the nature of the project intentions. Re write this abstract as the last thing you do.
+
+---
+<center>
+![Ali Shahbazi Mastan Abad](A0.jpg "My Picture"){width=50%}![Ali Shahbazi Mastan Abad](A1_5.jpg "My Picture"){width=50%}
+![Ali Shahbazi Mastan Abad](A1.jpg "My Picture"){width=50%}
+</center>
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Introduction to the data
+
+## Data and variables(see MS pg. 77,125)
+**Describe the data and the problem we wish to investigate.**
+In this case it is NASA or we can say any company that they are collecting data we would like to know if the data that they are collecting is right and following by that we would like to know if the software or code that we are using to collect data is working precise without any fault.
+
+So, the question is how can we do that? There are many ways to see if the collected data is right or wrong which in this case we are considering 4 different methods to see if their prediction of faulty data is right or wrong. These methods should be applied to collected data.
+
+The data is constructed from the data fromt the satelite and if there is any defect and the prediction of each alorithm and what they say. If there is any defect in the data then it is *TRUE* and if there is not it is *FALSE*
+
+In this project we should be able to load data and by writing our own functions calculate the *probabilities* of Algorithm is correct, predict defect given module has defect, predict defect given modules has no defect, and module has defect given predict defect.
+
+## Summary Table 
+**Create the summary table (TABLE SIA3.2) found on page 125.**
+Using $\LaTeX$ construct the formulae for 
+
+1. Accuracy
+2. Detection rate
+3. False alarm rate
+4. Precision
+
+$1. Accuracy: P(Algorithm is correct) = \frac{(a+d)}{(a+b+c+d)}$
+
+$2. Detection Rate: P(predict defect|module has defect)=\frac{d}{(b+d)}$
+
+$3. Fals alarm Rate: P(predict defect|module has no defect)=\frac{c}{(a+c)}$
+
+$4. Precision: P(module has defect|predict defect)=\frac{d}{(d+c)}$
+
+# R functions
+**Using the above definitions make R functions that will create the required probabilities, please remove `eval=FALSE` when creating the functions:**
+
+1. I am going to do is first I am going to load the data file into an object name collected.data.
+
+2. Definition of a,b,c, and d is as below:
+
+<center>
+![Definition of a,b,c, and d](TableSIA32 - Definition abcd.png){width=50%}
+</center>
+
+which is showing which method is predicting if there is any defect or not and if there is actually a defect.
+
+3. Continue with that I am going to count the situation a,b,c, and d for each method
+
+```{r Reading the Data file}
+#Loading data to an object under the name of collected.data
+collected.data=read.csv("SWDEFECTS.csv", header = TRUE)
+```
+
+```{r Defining counter for vg10.a which means no prediction and no defects}
+n=with(collected.data, collected.data[,"defect"]) #putting defect into an object
+vg10=with(collected.data, collected.data[,"predict.vg.10"]) #creating a vector for vg.10 method
+evg14.5=with(collected.data, collected.data[,"predict.evg.14.5"]) ##creating a vector for evg.14.5 method
+ivg9.2=with(collected.data, collected.data[,"predict.ivg.9.2"]) #creating a vector for ivg.9.2 method
+loc50=with(collected.data, collected.data[,"predict.loc.50"]) #creating a vector for loc.50 method
+summary(n) #Summary of data file
+length(n)  #Length data file
+vg10.a=0   #vg10.a is the initial value of the method vg.10 that predicts no defect and there is no defect
+for (i in 1:length(n)){
+  
+  if (vg10[i]=="no" & n[i]=="FALSE")
+  {
+    vg10.a=vg10.a+1
+  }
+}
+vg10.a #It shows how many FALSE defects there is when the algorithm vg.10 says also there is no defect
+```
+
+```{r Defining counter for vg10.b which means no prediction but there is defects}
+vg10.b=0 #vg10.b is the initial value of the method vg.10 that predicts no defect but there is defects
+for (i in 1:length(n)){
+  
+  if (vg10[i]=="no" & n[i]=="TRUE")
+  {
+    vg10.b=vg10.b+1
+  }
+}
+vg10.b #Number of no defect predictions but actually there is defect
+```
+
+```{r Defining counter for vg10.c which means there is prediction of defect but there is no defects}
+vg10.c=0 #vg10.c is the initial value of the method vg.10 that predicts there is defect but there is no defect
+for (i in 1:length(n)){
+  
+  if (vg10[i]=="yes" & n[i]=="FALSE")
+  {
+    vg10.c=vg10.c+1
+  }
+}
+vg10.c #By Defining counter, this is the total number of data that have been predicted to have problem but it did not have problem using vg.10 method
+```
+
+```{r Defining counter for vg10.d which means there is prediction of defect but there is no defects}
+vg10.d=0 #vg10.d is the initial value of the method vg.10 that predicts there is defect and there are defects
+for (i in 1:length(n)){
+  
+  if (vg10[i]=="yes" & n[i]=="TRUE")
+  {
+    vg10.d=vg10.d+1
+  }
+}
+vg10.d #By Defining counter, this is the total number of data that have been predicted to have problem and it did have problem using vg.10 method
+```
+
+
+```{r Defining counter for evg14.5a which means there is prediction of defect but there is no defects}
+evg14.5a=0 #evg14.5a is the initial value of the method evg14.5 that predicts no defect and there is no defect
+for (i in 1:length(n))
+  {
+  
+  if (evg14.5[i]=="no" & n[i]=="FALSE")
+  {
+    evg14.5a=evg14.5a+1
+  }
+}
+evg14.5a #By Defining counter, this is the total number of data that have been predicted not to have problem and it did not have problem using evg14.5 method
+```
+
+
+```{r Defining counter for evg14.5b which means there is prediction of defect but there is no defects}
+evg14.5b=0 #evg14.5b is the initial value of the method evg14.5 that predicts no defect but there are defects
+for (i in 1:length(n))
+  {
+  
+  if (evg14.5[i]=="no" & n[i]=="TRUE")
+  {
+    evg14.5b=evg14.5b+1
+  }
+}
+evg14.5b #By Defining counter, this is the total number of data that have been predicted not to have problem but it did have problem using evg14.5 method
+```
+
+
+
+```{r Defining counter for evg14.5c which means there is prediction of defect but there is no defects}
+evg14.5c=0 #evg14.5c is the initial value of the method evg14.5 that predicts there is defect but there is no defect
+for (i in 1:length(n))
+  {
+  
+  if (evg14.5[i]=="yes" & n[i]=="FALSE")
+  {
+    evg14.5c=evg14.5c+1
+  }
+}
+evg14.5c #By Defining counter, this is the total number of data that have been predicted to have problem but it did not have problem using evg14.5 method
+```
+
+
+```{r Defining counter for evg14.5d which means there is prediction of defect but there is no defects}
+evg14.5d=0 #evg14.5d is the initial value of the method evg14.5 that predicts there is defect and there are defects
+for (i in 1:length(n))
+  {
+  
+  if (evg14.5[i]=="yes" & n[i]=="TRUE")
+  {
+    evg14.5d=evg14.5d+1
+  }
+}
+evg14.5d #By Defining counter, this is the total number of data that have been predicted to have problem but and it did have problem using evg14.5 method
+```
+
+
+```{r Defining counter for ivg9.2a which means there is prediction of defect but there is no defects}
+ivg9.2a=0 #ivg9.2a is the initial value of the method ivg9.2 that predicts no defect and there is no defect
+for (i in 1:length(n))
+  {
+  
+  if (ivg9.2[i]=="no" & n[i]=="FALSE")
+  {
+    ivg9.2a=ivg9.2a+1
+  }
+}
+ivg9.2a #By Defining counter, this is the total number of data that have been predicted not to have problem and it did not have problem using ivg9.2 method
+```
+
+
+```{r Defining counter for ivg9.2b which means there is prediction of defect but there is no defects}
+ivg9.2b=0 #ivg9.2b is the initial value of the method ivg9.2 that predicts no defect but there are defects
+for (i in 1:length(n))
+  {
+  
+  if (ivg9.2[i]=="no" & n[i]=="TRUE")
+  {
+    ivg9.2b=ivg9.2b+1
+  }
+}
+ivg9.2b #By Defining counter, this is the total number of data that have been predicted not to have problem but it did have problem using ivg9.2 method
+```
+
+```{r Defining counter for ivg9.2c which means there is prediction of defect but there is no defects}
+ivg9.2c=0 #ivg9.2c is the initial value of the method ivg9.2 that predicts there is defect but there is no defect
+for (i in 1:length(n))
+  {
+  
+  if (ivg9.2[i]=="yes" & n[i]=="FALSE")
+  {
+    ivg9.2c=ivg9.2c+1
+  }
+}
+ivg9.2c #By Defining counter, this is the total number of data that have been predicted to have problem but it did not have problem using ivg9.2 method
+```
+
+
+```{r Defining counter for ivg9.2d which means there is prediction of defect but there is no defects}
+ivg9.2d=0 #ivg9.2d is the initial value of the method ivg9.2 that predicts there is defect and there are defects
+for (i in 1:length(n))
+  {
+  
+  if (ivg9.2[i]=="yes" & n[i]=="TRUE")
+  {
+    ivg9.2d=ivg9.2d+1
+  }
+}
+ivg9.2d #By Defining counter, this is the total number of data that have been predicted to have problem and it did have problem using ivg9.2 method
+```
+
+
+```{r Defining counter for loc50.a which means there is prediction of defect but there is no defects}
+loc50.a=0 #loc50.a is the initial value of the method loc50 that predicts no defect and there is no defect
+for (i in 1:length(n))
+  {
+  
+  if (loc50[i]=="no" & n[i]=="FALSE")
+  {
+    loc50.a=loc50.a+1
+  }
+}
+loc50.a #By Defining counter, this is the total number of data that have been predicted not to have problem and it did not have problem using loc50 method
+```
+
+```{r Defining counter for loc50.b which means there is prediction of defect but there is no defects}
+loc50.b=0 #loc50.b is the initial value of the method loc50 that predicts no defect but there is defects
+for (i in 1:length(n))
+  {
+  
+  if (loc50[i]=="no" & n[i]=="TRUE")
+  {
+    loc50.b=loc50.b+1
+  }
+}
+loc50.b #By Defining counter, this is the total number of data that have been predicted not to have problem but it did have problem using loc50 method
+```
+
+
+```{r Defining counter for loc50.c which means there is prediction of defect but there is no defects}
+loc50.c=0 #loc50.c is the initial value of the method loc50 that predicts there is defect but there is no defect
+for (i in 1:length(n))
+  {
+  
+  if (loc50[i]=="yes" & n[i]=="FALSE")
+  {
+    loc50.c=loc50.c+1
+  }
+}
+loc50.c #By Defining counter, this is the total number of data that have been predicted to have problem but it did not have problem using loc50 method
+```
+
+
+```{r Defining counter for loc50.d which means there is prediction of defect but there is no defects}
+loc50.d=0 #loc50.d is the initial value of the method loc50 that predicts there is defect and there are defects
+for (i in 1:length(n))
+  {
+  
+  if (loc50[i]=="yes" & n[i]=="TRUE")
+  {
+    loc50.d=loc50.d+1
+  }
+}
+loc50.d #By Defining counter, this is the total number of data that have been predicted to have problem and it did have problem using loc50 method
+```
+
+## Accuracy Function
+
+
+```{r accuracy}
+acc=function(a,b,c,d)
+{
+(a+d)/(a+b+c+d)
+}
+```
+
+## Detection Function
+```{r detecton}
+detect=function(b,d)
+{
+  d/(b+d)
+}
+```
+
+## False Alarm Rate Function
+```{r alarm}
+falarm=function(a,c)
+{
+  c/(a+c)
+}
+```
+
+## Precision Function
+
+```{r precision}
+prec=function(c,d)
+{
+  d/(c+d)
+}
+```
+
+#Create the tables in Figure SIA3.1
+
+##Prediction vg.10 vs defect
+```{r}
+swd=collected.data
+head(swd)
+tab=with(swd, table(predict.vg.10,defect))
+barplot(tab, beside=TRUE, leg=TRUE)
+tab2=addmargins(tab)
+tab2
+```
+
+##Prediction evg.14.5 vs defect
+
+```{r}
+swd=collected.data
+head(swd)
+tab=with(swd, table(predict.evg.14.5,defect))
+barplot(tab, beside=TRUE, leg=TRUE)
+tab2=addmargins(tab)
+tab2
+```
+
+##Prediction ivg.9.2 vs defect
+```{r}
+swd=collected.data
+head(swd)
+tab=with(swd, table(predict.ivg.9.2,defect))
+barplot(tab, beside=TRUE, leg=TRUE)
+tab2=addmargins(tab)
+tab2
+```
+
+##Prediction loc.50 vs defect
+```{r}
+swd=collected.data
+head(swd)
+tab=with(swd, table(predict.loc.50,defect))
+barplot(tab, beside=TRUE, leg=TRUE)
+tab2=addmargins(tab)
+tab2
+```
+
+#Create the table on page 127, TABLE SIA3.3
+##Table and Barplot with Values
+If we consider the initial value that we calculated a,b,c, and d for each method then we would have a bar plot and the SIA3.3 table as below:
+
+```{r}
+vg10.a
+vg10.b
+vg10.c
+vg10.d
+evg14.5a
+evg14.5b
+evg14.5c
+evg14.5d
+ivg9.2a
+ivg9.2b
+ivg9.2c
+ivg9.2d
+loc50.a
+loc50.b
+loc50.c
+loc50.d
+
+a2=acc(vg10.a,vg10.b,vg10.c,vg10.d)
+a3=acc(evg14.5a,evg14.5b, evg14.5c, evg14.5d)
+a4=acc(ivg9.2a,ivg9.2b,ivg9.2c,ivg9.2d)
+a1=acc(loc50.a,loc50.b,loc50.c,loc50.d)
+
+b2=detect(vg10.b,vg10.d)
+b3=detect(evg14.5b,evg14.5d)
+b4=detect(ivg9.2b,ivg9.2d)
+b1=detect(loc50.b,loc50.d)
+
+c2=falarm(vg10.a,vg10.c)
+c3=falarm(evg14.5a,evg14.5c)
+c4=falarm(ivg9.2a,ivg9.2c)
+c1=falarm(loc50.a,loc50.c)
+
+d2=prec(vg10.c,vg10.d)
+d3=prec(evg14.5c,evg14.5d)
+d4=prec(ivg9.2c,ivg9.2d)
+d1=prec(loc50.c,loc50.d)
+
+probs=c("Accuracy","Detection Rate","False Alarm Rate", "Precision")
+  mths = c("Lines of Code", "Cyclomatic complexity", "Essential complexity", "Design complexity")
+  
+  alltab = matrix(c(a1,a2,a3,a4,b1,b2,b3,b4,c1,c2,c3,c4,d1,d2,d3,d4),nr=4,nc=4,dimnames=list(mths,probs))
+  
+  alltab
+  
+barplot(alltab, ylab="Probabilities", beside=TRUE, col=rainbow(20))
+```
+
+
+## Defining the function
+Defining the function that gives the table as SIA3.3 needs 16 input; the reason for that is we have 4 methods which for each method we should consider 4 output that two of them the method predicts defect which for one of them it is correct and for two of them predicts no defect that also in this case only of them is correct. so $4\times4=16$ input is needed to form the table. The function is as below:
+```{r}
+mytable=function(a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p)
+  {
+vg10.a=a
+vg10.b=b
+vg10.c=c
+vg10.d=d
+evg14.5a=e
+evg14.5b=f
+evg14.5c=g
+evg14.5d=h
+ivg9.2a=i
+ivg9.2b=j
+ivg9.2c=k
+ivg9.2d=l
+loc50.a=m
+loc50.b=n
+loc50.c=o
+loc50.d=p
+  
+a2=acc(vg10.a,vg10.b,vg10.c,vg10.d)
+a3=acc(evg1.5a,evg1.5b, evg1.5c, evg1.5d)
+a4=acc(ivg9.2a,ivg9.2b,ivg9.2c,ivg9.2d)
+a1=acc(loc50.a,loc50.b,loc50.c,loc50.d)
+
+b1=detect(vg10.b,vg10.d)
+b2=detect(evg1.5b,evg1.5d)
+b3=detect(ivg9.2b,ivg9.2d)
+b4=detect(loc50.b,loc50.d)
+
+c1=falarm(vg10.a,vg10.c)
+c2=falarm(evg1.5a,evg1.5c)
+c3=falarm(ivg9.2a,ivg9.2c)
+c4=falarm(loc50.a,loc50.c)
+
+d1=prec(vg10.c,vg10.d)
+d2=prec(evg1.5c,evg1.5d)
+d3=prec(ivg9.2c,ivg9.2d)
+d4=prec(loc50.c,loc50.d)
+
+probs=c("Accuracy","Detection Rate","False Alarm Rate", "Precision")
+  mths = c("Lines of Code", "Cyclomatic complexity", "Essential complexity", "Design complexity")
+  alltab = matrix(c(a1,b1,c1,d1,a2,b2,c2,d2,a3,b3,c3,d3,a4,b4,c4,d4),nr=4,nc=4,dimnames=list(mths,probs) )
+  
+barplot(alltab, ylab="probs", beside=TRUE, col=rainbow(20))
+}
+```
+
+
+
+

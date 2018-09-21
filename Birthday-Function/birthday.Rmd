@@ -52,19 +52,19 @@ mybirthday = function(n)
   # One problem is the size of the numbers
   # Use log to make calculation manageable lfactorial is the log of the factorial
   # Below is log(P(AC))
-  logpAc = lfactorial(365)-lfactorial(365-(1:n))-(1:n)*log(###)
+  logpAc = lfactorial(365)-lfactorial(365-(1:n))-(1:n)*log(365)
   pAc=exp(logpAc)
-  pA = 1- ###
+  pA = 1- pAc
   
-  names(pA)=1:###
+  names(pA)=1:n
+  names(pA)
+  pie(pA, col=rainbow(length(n)))
   
-  pie(pA, col=rainbow(###))
-  
-  mat = matrix(c(round(pA,###)), nr=n, nc=1, byrow=FALSE,
-               dimnames=list("Number in room"=1:n, c("pA")))
-  as.table(###)
+  mat = matrix(c(round(pA,4)), nr=n, nc=1, byrow=FALSE,dimnames=list("Number in room"=1:n, c("pA")))
+  mat
+  return(as.table(mat))
 }
 
-mybirthday(32)
-
+table = mybirthday(32)
+table
 ```
