@@ -1,0 +1,58 @@
+---
+title: 'Assignment 2'
+author: "Prithviaj Kadiyala"
+date: '`r format(Sys.Date(),format="%A, %B %d, %Y")`'
+output: 
+  html_document:
+    df_print: paged
+    fig_caption: true
+    highlights: pygments
+    number_sections: no
+    theme: spacelab
+    toc: yes
+    toc_float: yes
+---
+
+```{r setup, include=FALSE, fig.align='center'}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Questions{1/17}
+
+## Q 1
+###a
+
+$$
+\begin{align}
+P(Expert \, did \, not \, identify| Matched \,Prints)&=1-P(Expert\, Identify|Matched \,prints)\\
+&=1-0.9212 \\
+&= 0.0788 \\
+&= 7.88\%
+\end{align}
+$$
+
+###b
+$$
+\begin{align}
+P(Novice \, will \, not \, identify| Matched \,Prints)&=1-P(Novice\, Identify|Matched\, prints)\\
+&=1-0.7455 \\
+&= 0.2545 \\
+&= 25.45\%
+\end{align}
+$$
+
+###c
+Since, Novice has higher probability of failing to identifying the matched prints. It is possible that it will most likely be a novice that fails to identify the matched prints.
+
+## Q 2
+```{r}
+plot(1:10)
+```
+
+
+## Q 3
+
+## Q 4
+
+
+## Q 5
