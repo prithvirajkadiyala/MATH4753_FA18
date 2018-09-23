@@ -17,10 +17,10 @@ output:
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-# Questions{1/17}
+# Questions{9/17}
 
 ## Q 1
-###a
+###a P(Expert|Matched Prints)
 
 $$
 \begin{align}
@@ -31,7 +31,7 @@ P(Expert \, did \, not \, identify| Matched \,Prints)&=1-P(Expert\, Identify|Mat
 \end{align}
 $$
 
-###b
+###b P(Novice|Matched Prints)
 $$
 \begin{align}
 P(Novice \, will \, not \, identify| Matched \,Prints)&=1-P(Novice\, Identify|Matched\, prints)\\
@@ -41,18 +41,235 @@ P(Novice \, will \, not \, identify| Matched \,Prints)&=1-P(Novice\, Identify|Ma
 \end{align}
 $$
 
-###c
+###c 
 Since, Novice has higher probability of failing to identifying the matched prints. It is possible that it will most likely be a novice that fails to identify the matched prints.
 
 ## Q 2
-```{r}
-plot(1:10)
-```
 
+###a P(Positive|User)
+$$
+\begin{align}
+P(+|User) = 0.5
+\end{align}
+$$
+
+###b P(Negative|Non-User)
+$$
+\begin{align}
+P(-|User_c) = 0.99
+\end{align}
+$$
+
+###c P(User| Positive)
+$$
+\begin{align}
+P(User|+) &= \frac{P(A \cap B)}{P(B)}\\
+&=\frac{0.1*0.5}{(0.1*0.5)+(0.9*0.01)}\\
+&=\frac{0.05}{0.059}\\
+&= 0.8475\\
+&= 85 \%
+\end{align}
+$$ 
 
 ## Q 3
 
-## Q 4
+```
+Consider two sets n1 and n2 with the number of elements a1 and a2, respectively. The number of different samples that can be formed is a1*a2. If another set n3 (with the number of elements a3) is added, the number of different samples that can be formed becomes (a1*a2)*a3. It follows that for a set nk, the number of different samples that can be formed is a1*a2*.*ak, which is a1a2.ak.
+```
 
+
+## Q 4
+```
+Consider a set of N elements. If we want to choose n elements (without replacement) from N elements, the number of options for each element are N * (N - 1) * (N - 2) * (N - 3) * ... * (N - n + 1) This is the same as N!, until a certain point. Since we only want n elements, the point that N! stops is (N - n+1) so the formula above reduces to
+```
+
+$$\frac{N!}{(N-n)!}$$
 
 ## Q 5
+By Theorem 3.2, the number of distinct ways to order N elements from a group of N elements is 
+
+<center>
+$\frac{N!}{(N-n)!}$
+</center>
+
+However, according to Theorem 3.1, the number of distinct ways to partition N elements from a group of N elements is also 
+
+<center>
+$(A)(n_1)!(n_2)!...(n_k)!$
+</center>
+
+Where A is the number of ways to partition N elements into k groups. So we have 
+
+<center>
+$N!=(A)(n_1)!(n_2)!....(n_k)!$
+</center>
+
+Solving for A gives 
+<center>
+$A=\frac{N!}{(n_1)!(n_2)!....(n_k)!}$
+</center>
+
+
+## Q 6
+
+To sample n elements from a group of N elements, we can use the notation: $\binom{N}{n}$, which is N choose n. This is equivalent to partioning N elements into k=2 groups - the elements sampled and the elements not sampled. By Theorem 3.3, that results in
+
+<center>
+$$
+\binom{N}{n} = \frac{N!}{n!(N-n)!}
+$$
+</center>
+
+## Q 7
+###a Sum of Probabilities
+<center>
+$$
+\begin{align}
+p(Y) &= P(0) + P(1) + P(2) + P(3) + P(4)\\
+&=0.09+0.30+0.37+0.20+0.04\\
+\end{align}
+$$
+</center>
+
+```{r}
+P = 0.09+0.30+0.37+0.20+0.04
+P
+```
+
+###b $P(3 \cup 4)$
+$P(3 \cup 4) = P(3) + P(4)$
+```{r}
+P = 0.20+0.04
+P
+```
+
+###c $P(Y \leq 2)$
+$P(Y \leq 2) = P(0) + P(1) + P(2)$
+```{r}
+P= 0.09+0.30+0.37
+P
+```
+
+## Q 8
+###a Property of Probability distribution
+Property of Probability distribution of discrete variables is that P(Y)=1.
+
+So,
+
+$P(Y)= P(0) + P(1) + ... + P(20)$
+
+```{r}
+P=0.17+0.10+0.11+0.11+0.10+0.10+0.07+0.05+0.03+0.02+0.02+0.02+0.02+0.02+0.01+0.01+0.01+0.01+0.01+0.005+0.005
+P
+```
+
+###b $P(Y \geq 10)$
+$P(Y \geq 10)=1-\sum P(Y \leq 9)$
+```{r}
+P = 1-(0.17+0.10+0.11+0.11+0.10+0.10+0.07+0.05+0.03+0.02)
+P
+```
+
+###c Mean and Variance
+$Mean(\mu)=\sum_{0}^{20}y.P(y)$
+```{r}
+mean = (0*0.17)+(1*0.10)+(2*0.11)+(3*0.11)+(4*0.10)+(5*0.10)+(6*0.07)+(7*0.05)+(8*0.03)+(9*0.02)+(10*0.02)+(11*0.02)+(12*0.02)+(13*0.02)+(14*0.01)+(15*0.01)+(16*0.01)+(17*0.01)+(18*0.01)+(19*0.005)+(20*0.005)
+mean
+```
+
+$Variance(\sigma^2) = \frac{1}{N}.\sum (x_i- \mu)^2$
+
+```{r}
+y=c(0.17,0.10,0.11,0.11,0.10,0.10,0.07,0.05,0.03,0.02,0.02,0.02,0.02,0.02,0.01,0.01,0.01,0.01,0.01,0.005,0.005)
+```
+
+```{r}
+#Doing the summation part
+for (i in 1:length(y)) {
+    sum <- (y[i]-mean)^2
+}
+# we do 1/N now
+sum=sum/21
+sum
+```
+
+## Q 9
+###a P(Y=10)
+```{r}
+x=rep(c(1,0),c(70,30))
+dbinom(10,25,0.7)
+```
+
+###b $P(Y \leq 5)$
+```{r}
+pbinom(5,25,0.7)
+```
+
+###c Mean and Variance
+
+$Mean = n*p$
+```{r}
+mean = 25*0.7
+mean
+```
+
+$$
+Variance(\sigma^2) = n*p*q\\
+\sigma=\sqrt(npq)
+$$
+```{r}
+variance=25*0.7*0.3
+sqrt(variance)
+```
+
+###d Interpretation
+The results indicate that the number of foreign students graduating with a Ph.D. in Engineering in a group of 25 will be, on average, `r mean`. Also, according to Chebyshev's, at least 75% of the samples will be within 2 standard deviations from
+the mean or in the interval (`r round((mean - 2*sqrt(variance)),2)`, `r round((mean + 2*sqrt(variance)),2)`).
+
+## Q 10
+###a $P(Y=10)$
+```{r}
+dmultinom(1:10,prob=c(0.1,0.1,0.1,0.1,0.1,0.1,0.1,0.1,0.1,0.1))
+```
+
+## Q 11
+###a Formula for Probability Distribution
+$P(Y=y)=p*q^(y-1)$
+```{r}
+PD=0.4*0.6^(y-1)
+```
+
+###b What is E(Y)?
+E(Y) is mean.
+
+We can calculate mean using the formula $\mu=\frac{1}{p}$
+```{r}
+mean=1/0.4
+mean
+```
+
+###c $P(Y=1)$
+```{r}
+PD=0.4*0.6^(1-1)
+PD
+```
+
+###d $P(Y \geq 2)$
+```{r}
+dgeom(1, 0.4)
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
