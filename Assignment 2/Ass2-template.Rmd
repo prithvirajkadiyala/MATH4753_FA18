@@ -17,7 +17,7 @@ output:
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-# Questions{9/17}
+# Questions{17/17}
 
 ## Q 1
 ###a P(Expert|Matched Prints)
@@ -229,8 +229,17 @@ the mean or in the interval (`r round((mean - 2*sqrt(variance)),2)`, `r round((m
 ## Q 10
 ###a $P(Y=10)$
 ```{r}
-dmultinom(1:10,prob=c(0.1,0.1,0.1,0.1,0.1,0.1,0.1,0.1,0.1,0.1))
+dmultinom(c(5,5,5,5,5,5,5,5,5,5),prob=c(0.1,0.1,0.1,0.1,0.1,0.1,0.1,0.1,0.1,0.1))
 ```
+
+###b $P(Y < 2)$
+
+$P(Y<2)=P(y=0)+P(y=1)$
+```{r}
+ans=dbinom(0,50,0.1)+dbinom(1,50,0.1)
+ans
+```
+
 
 ## Q 11
 ###a Formula for Probability Distribution
@@ -249,15 +258,301 @@ mean
 ```
 
 ###c $P(Y=1)$
+
+where k=y-1
+
 ```{r}
-PD=0.4*0.6^(1-1)
-PD
+dgeom(0,prob=0.4)
 ```
 
-###d $P(Y \geq 2)$
+###d $P(Y > 2)$
+
+$P(Y > 2)=1-P(Y \leq 2)$
 ```{r}
-dgeom(1, 0.4)
+ans = 1-(dgeom(0,0.4)+dgeom(1,0.4))
+ans
 ```
+
+## Q 12
+###a
+```{r}
+dhyper(0:8,8,201,10)
+```
+
+This shows us that getting at leat 1 facility that treats hazardous waste on-site is `r dhyper(1,8,201,10)`. Similarly, getting more than 1 has reduced probability and getting all 8 of those is very very less. `r dhyper(8,8,201,10)`
+
+###b
+```{r}
+dhyper(4,8,201,10)
+```
+
+4 out of 10 facilities selected will process hazardous waste on-site is `r dhyper(4,8,201,10)`
+
+## Q 13
+###a
+
+Since variance and the ean are the same for Poisson Distribution V(Y) = E(Y) = 0.03
+
+###b
+The following are the conditions must follow the Poisson Distribution:
+
+
+>
+  1. The experiment consists of counting the number of times Y a particular event occurs during a given unit of time or in a given area.
+  2. The probability that an event occurs in a given unit of time, area and volume is the same for the units
+  3. The number of events that occur in one unit of time, area, or volume is independent of the number that in the other units.
+
+
+###c $P(Y=0)$
+
+$$
+\begin{align}
+p(y)&=\frac{\lambda^y*e^(-\lambda)}{y!}\\
+&=\frac{0.03^0*e^(-0.03)}{0!}
+\end{align}
+$$
+
+
+```{r}
+dpois(0,0.03)
+```
+
+## Q 14
+###a Find c
+We have to find the value of c such that the given function is proper density function.
+We get the value of c such that $\int\limits_{-\infty}^{\infty}f(y)dy=1$
+
+$$
+\begin{align}
+\int\limits_{0}^{1}c\,(2-y)dy&=1\\
+&\implies c \left|2y-\frac{y^2}{2}\right|_0^1\\
+& \implies c \left[2-\frac{1}{2}\right]=1\\
+& \implies c*\frac{3}{2}=1\\
+& \implies c=\frac{2}{3}
+\end{align}
+$$
+
+As a result, the proper density function of Y is as follows:
+$$
+f(y) =
+  \begin{cases}
+    \frac{2}{3}\,(2-y)       & \quad \text{if } 0 \le y \le 1\\
+    0                        & \quad \text elsewhere
+  \end{cases}
+$$
+
+###b Find the distribution function of Y
+We have to find the distribution function of Y,
+
+$$
+\begin{align}
+F(y)&=\int\limits_{-\infty}^{y}f(t)dt\\
+&=\int\limits_{0}^{y}\frac{2}{3}(2-t)dt\\
+&= \frac{2}{3} \left|2t-\frac{t^2}{2}\right|_0^y\\
+&=\frac{2}{3} \left[2y-\frac{y^2}{2}\right]\\
+\end{align}
+$$
+
+Therefore, the distribution function of Y is given by 
+$$
+f(y) =
+  \begin{cases}
+    0                                     & \quad \text{if } y \le 0\\
+    \frac{2}{3}\,(2y-\frac{y^2}{2})       & \quad \text{if } 0 \le y \le 1\\
+    0                                     & \quad \text elsewhere
+  \end{cases}
+$$
+
+### Compute $F(0.4)$
+$$
+\begin{align}
+F(0.4)&=P(Y \leq 0.4)\\
+&=\frac{2}{3}\left(2*0.4-\frac{(0.4)^2}{2}\right)\\
+\end{align}
+$$
+```{r}
+ans = (2/3)*((2*0.4)-((0.4^2)/2))
+ans
+```
+
+### Compute $P(.1 \leq Y \leq .6)$
+
+$$
+\begin{align}
+P(0.1 \leq Y \leq 0.6)&=P(Y \leq 0.6)-P(Y \leq 0.1)\\
+&=\frac{2}{3}\left(2*0.6-\frac{(0.6)^2}{2}\right)-\frac{2}{3}\left(2*0.1-\frac{(0.1)^2}{2}\right)\\
+\end{align}
+$$
+
+```{r}
+ans = ((2/3)*((2*0.6)-((0.6^2)/2)))-((2/3)*((2*0.1)-((0.1^2)/2)))
+ans
+```
+
+## Q 15
+
+Given the amount of time Y that a commuter train is late a continuous random vaiable with pdf is given by
+$$
+f(y) =
+  \begin{cases}
+    \frac{3}{500}\,(25-y^2)       & \quad \text if -5 <  y < 5\\
+    0                        & \quad \text elsewhere
+  \end{cases}
+$$
+
+###a Mean and Variance calculation
+We find the mean and variance of the amount of time in minutes the train is late
+$$
+\begin{align}
+E(Y)&=\int\limits_{-\infty}^{\infty}yf(y)dy\\
+&=\int\limits_{-5}^{5}y \left(\frac{3}{500}(25-y^2)\right)dy\\
+&=\left[-\frac{3}{2000}y^4+\frac{3}{40}y^3\right]_{-5}^5\\
+&=0
+\end{align}
+$$
+
+Now, we find $E(Y^2)$
+$$
+\begin{align}
+E(Y)&=\int\limits_{-\infty}^{\infty}y^2f(y)dy\\
+&=\int\limits_{-5}^{5}y^2 \left(\frac{3}{500}(25-y^2)\right)dy\\
+&=\left[-\frac{3}{2000}y^5+\frac{3}{40}y^3\right]_{-5}^5\\
+&=5
+\end{align}
+$$
+
+variance 
+$$
+\begin{align}
+\sigma^2&=E(Y^2)-\left[E(Y)\right]^2\\
+&=5-0\\
+&=5
+\end{align}
+$$
+
+###b Mean and variance of train is late in hours
+Let Z show the time in Hours.
+So, Z can be $Z=\frac{Y}{60}$
+
+Computing Mean
+$$
+\begin{align}
+E(Y)&=E(\frac{Y}{60})\\
+&=\frac{1}{60}* E(Y)\\
+&=\frac{1}{60}*0 \\
+&= 0
+\end{align}
+$$
+
+Variance
+$$
+\begin{align}
+Var(Z) &= Var(\frac{Y}{60})\\
+&=\frac{1}{60^2}*Var(Y)\\
+&=\frac{1}{60^2}*5\\
+&=\frac{1}{720}\\
+&= 0.00138
+
+\end{align}
+$$
+
+###c Mean and variance of train is late in minutes
+We find the mean and variance of the amount of time in seconds the train is late
+
+So $W=60Y$
+
+Mean
+$$
+\begin{align}
+E(W)&=E(60 * Y)\\
+&=60 * E(Y)\\
+&=60*0\\
+&= 0
+\end{align}
+$$
+
+Variance
+$$
+\begin{align}
+Var(W) &= Var(60*Y)\\
+&= 60^2 * Var(Y)\\
+&= 60^2 * 5\\
+&= 18000
+\end{align}
+$$
+
+## Q 16
+
+Data Givrn 
+
+$\mu = 50$
+$\sigma^2 = 3.2$
+
+###a $P(Y > 45)$
+$P(Y > 45) = 1- P(Y \leq 45)$
+```{r}
+ans = 1 - pnorm(45,50,3.2)
+ans
+```
+
+###b $P(Y < 55)$
+```{r}
+pnorm(55,50,3.2)
+```
+
+###c $P(51 < y < 52)$
+```{r}
+pnorm(52,50,3.2)-pnorm(51,50,3.2)
+```
+
+## Q 17
+Given 
+$\mu = 605$
+$\sigma^2 = 185$
+
+###a $P(500 < Y < 700)$
+```{r}
+pnorm(700,605,185)-pnorm(500,605,185)
+```
+
+###b $P(400 < Y < 500)$
+```{r}
+pnorm(500,605,185)-pnorm(400,605,185)
+```
+
+###c $P(Y < 850)$
+```{r}
+pnorm(850,605,185)
+```
+
+###d $P(Y > 1000)$
+$P(Y > 1000) = 1- P(y \leq 1000)$
+```{r}
+ans = 1- pnorm(1000,605,185)
+ans
+```
+
+###e Top 10% ratings
+When only 10% cars exceed the ratings. It means that the rest of the cars sum upto 90% of the ratings. So we find the rating that the 90% of the cars fall in.
+
+
+```{r}
+qnorm(0.9,605,185)
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

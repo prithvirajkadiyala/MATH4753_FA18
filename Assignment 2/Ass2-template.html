@@ -228,8 +228,8 @@ div.tocify {
 </div>
 
 
-<div id="questions917" class="section level1">
-<h1>Questions{9/17}</h1>
+<div id="questions1717" class="section level1">
+<h1>Questions{17/17}</h1>
 <div id="q-1" class="section level2">
 <h2>Q 1</h2>
 <div id="a-pexpertmatched-prints" class="section level3">
@@ -430,8 +430,15 @@ sqrt(variance)</code></pre>
 <h2>Q 10</h2>
 <div id="a-py10-1" class="section level3">
 <h3>a <span class="math inline">\(P(Y=10)\)</span></h3>
-<pre class="r"><code>dmultinom(1:10,prob=c(0.1,0.1,0.1,0.1,0.1,0.1,0.1,0.1,0.1,0.1))</code></pre>
-<pre><code>## [1] 1.906766e-10</code></pre>
+<pre class="r"><code>dmultinom(c(5,5,5,5,5,5,5,5,5,5),prob=c(0.1,0.1,0.1,0.1,0.1,0.1,0.1,0.1,0.1,0.1))</code></pre>
+<pre><code>## [1] 4.912046e-07</code></pre>
+</div>
+<div id="b-py-2" class="section level3">
+<h3>b <span class="math inline">\(P(Y &lt; 2)\)</span></h3>
+<p><span class="math inline">\(P(Y&lt;2)=P(y=0)+P(y=1)\)</span></p>
+<pre class="r"><code>ans=dbinom(0,50,0.1)+dbinom(1,50,0.1)
+ans</code></pre>
+<pre><code>## [1] 0.03378586</code></pre>
 </div>
 </div>
 <div id="q-11" class="section level2">
@@ -451,14 +458,261 @@ mean</code></pre>
 </div>
 <div id="c-py1" class="section level3">
 <h3>c <span class="math inline">\(P(Y=1)\)</span></h3>
-<pre class="r"><code>PD=0.4*0.6^(1-1)
-PD</code></pre>
+<p>where k=y-1</p>
+<pre class="r"><code>dgeom(0,prob=0.4)</code></pre>
 <pre><code>## [1] 0.4</code></pre>
 </div>
-<div id="d-py-geq-2" class="section level3">
-<h3>d <span class="math inline">\(P(Y \geq 2)\)</span></h3>
-<pre class="r"><code>dgeom(1, 0.4)</code></pre>
-<pre><code>## [1] 0.24</code></pre>
+<div id="d-py-2" class="section level3">
+<h3>d <span class="math inline">\(P(Y &gt; 2)\)</span></h3>
+<p><span class="math inline">\(P(Y &gt; 2)=1-P(Y \leq 2)\)</span></p>
+<pre class="r"><code>ans = 1-(dgeom(0,0.4)+dgeom(1,0.4))
+ans</code></pre>
+<pre><code>## [1] 0.36</code></pre>
+</div>
+</div>
+<div id="q-12" class="section level2">
+<h2>Q 12</h2>
+<div id="a" class="section level3">
+<h3>a</h3>
+<pre class="r"><code>dhyper(0:8,8,201,10)</code></pre>
+<pre><code>## [1] 6.708985e-01 2.795410e-01 4.562457e-02 3.762851e-03 1.688459e-04
+## [6] 4.135002e-06 5.247464e-08 3.028839e-10 5.707612e-13</code></pre>
+<p>This shows us that getting at leat 1 facility that treats hazardous waste on-site is 0.279541. Similarly, getting more than 1 has reduced probability and getting all 8 of those is very very less. 5.707611610^{-13}</p>
+</div>
+<div id="b" class="section level3">
+<h3>b</h3>
+<pre class="r"><code>dhyper(4,8,201,10)</code></pre>
+<pre><code>## [1] 0.0001688459</code></pre>
+<p>4 out of 10 facilities selected will process hazardous waste on-site is 1.68845910^{-4}</p>
+</div>
+</div>
+<div id="q-13" class="section level2">
+<h2>Q 13</h2>
+<div id="a-1" class="section level3">
+<h3>a</h3>
+<p>Since variance and the ean are the same for Poisson Distribution V(Y) = E(Y) = 0.03</p>
+</div>
+<div id="b-1" class="section level3">
+<h3>b</h3>
+<p>The following are the conditions must follow the Poisson Distribution:</p>
+<blockquote>
+<ol style="list-style-type: decimal">
+<li>The experiment consists of counting the number of times Y a particular event occurs during a given unit of time or in a given area.</li>
+<li>The probability that an event occurs in a given unit of time, area and volume is the same for the units</li>
+<li>The number of events that occur in one unit of time, area, or volume is independent of the number that in the other units.</li>
+</ol>
+</blockquote>
+</div>
+<div id="c-py0" class="section level3">
+<h3>c <span class="math inline">\(P(Y=0)\)</span></h3>
+<p><span class="math display">\[
+\begin{align}
+p(y)&amp;=\frac{\lambda^y*e^(-\lambda)}{y!}\\
+&amp;=\frac{0.03^0*e^(-0.03)}{0!}
+\end{align}
+\]</span></p>
+<pre class="r"><code>dpois(0,0.03)</code></pre>
+<pre><code>## [1] 0.9704455</code></pre>
+</div>
+</div>
+<div id="q-14" class="section level2">
+<h2>Q 14</h2>
+<div id="a-find-c" class="section level3">
+<h3>a Find c</h3>
+<p>We have to find the value of c such that the given function is proper density function. We get the value of c such that <span class="math inline">\(\int\limits_{-\infty}^{\infty}f(y)dy=1\)</span></p>
+<p><span class="math display">\[
+\begin{align}
+\int\limits_{0}^{1}c\,(2-y)dy&amp;=1\\
+&amp;\implies c \left|2y-\frac{y^2}{2}\right|_0^1\\
+&amp; \implies c \left[2-\frac{1}{2}\right]=1\\
+&amp; \implies c*\frac{3}{2}=1\\
+&amp; \implies c=\frac{2}{3}
+\end{align}
+\]</span></p>
+<p>As a result, the proper density function of Y is as follows: <span class="math display">\[
+f(y) =
+  \begin{cases}
+    \frac{2}{3}\,(2-y)       &amp; \quad \text{if } 0 \le y \le 1\\
+    0                        &amp; \quad \text elsewhere
+  \end{cases}
+\]</span></p>
+</div>
+<div id="b-find-the-distribution-function-of-y" class="section level3">
+<h3>b Find the distribution function of Y</h3>
+<p>We have to find the distribution function of Y,</p>
+<p><span class="math display">\[
+\begin{align}
+F(y)&amp;=\int\limits_{-\infty}^{y}f(t)dt\\
+&amp;=\int\limits_{0}^{y}\frac{2}{3}(2-t)dt\\
+&amp;= \frac{2}{3} \left|2t-\frac{t^2}{2}\right|_0^y\\
+&amp;=\frac{2}{3} \left[2y-\frac{y^2}{2}\right]\\
+\end{align}
+\]</span></p>
+<p>Therefore, the distribution function of Y is given by <span class="math display">\[
+f(y) =
+  \begin{cases}
+    0                                     &amp; \quad \text{if } y \le 0\\
+    \frac{2}{3}\,(2y-\frac{y^2}{2})       &amp; \quad \text{if } 0 \le y \le 1\\
+    0                                     &amp; \quad \text elsewhere
+  \end{cases}
+\]</span></p>
+</div>
+<div id="compute-f0.4" class="section level3">
+<h3>Compute <span class="math inline">\(F(0.4)\)</span></h3>
+<p><span class="math display">\[
+\begin{align}
+F(0.4)&amp;=P(Y \leq 0.4)\\
+&amp;=\frac{2}{3}\left(2*0.4-\frac{(0.4)^2}{2}\right)\\
+\end{align}
+\]</span></p>
+<pre class="r"><code>ans = (2/3)*((2*0.4)-((0.4^2)/2))
+ans</code></pre>
+<pre><code>## [1] 0.48</code></pre>
+</div>
+<div id="compute-p.1-leq-y-leq-.6" class="section level3">
+<h3>Compute <span class="math inline">\(P(.1 \leq Y \leq .6)\)</span></h3>
+<p><span class="math display">\[
+\begin{align}
+P(0.1 \leq Y \leq 0.6)&amp;=P(Y \leq 0.6)-P(Y \leq 0.1)\\
+&amp;=\frac{2}{3}\left(2*0.6-\frac{(0.6)^2}{2}\right)-\frac{2}{3}\left(2*0.1-\frac{(0.1)^2}{2}\right)\\
+\end{align}
+\]</span></p>
+<pre class="r"><code>ans = ((2/3)*((2*0.6)-((0.6^2)/2)))-((2/3)*((2*0.1)-((0.1^2)/2)))
+ans</code></pre>
+<pre><code>## [1] 0.55</code></pre>
+</div>
+</div>
+<div id="q-15" class="section level2">
+<h2>Q 15</h2>
+<p>Given the amount of time Y that a commuter train is late a continuous random vaiable with pdf is given by <span class="math display">\[
+f(y) =
+  \begin{cases}
+    \frac{3}{500}\,(25-y^2)       &amp; \quad \text if -5 &lt;  y &lt; 5\\
+    0                        &amp; \quad \text elsewhere
+  \end{cases}
+\]</span></p>
+<div id="a-mean-and-variance-calculation" class="section level3">
+<h3>a Mean and Variance calculation</h3>
+<p>We find the mean and variance of the amount of time in minutes the train is late <span class="math display">\[
+\begin{align}
+E(Y)&amp;=\int\limits_{-\infty}^{\infty}yf(y)dy\\
+&amp;=\int\limits_{-5}^{5}y \left(\frac{3}{500}(25-y^2)\right)dy\\
+&amp;=\left[-\frac{3}{2000}y^4+\frac{3}{40}y^3\right]_{-5}^5\\
+&amp;=0
+\end{align}
+\]</span></p>
+<p>Now, we find <span class="math inline">\(E(Y^2)\)</span> <span class="math display">\[
+\begin{align}
+E(Y)&amp;=\int\limits_{-\infty}^{\infty}y^2f(y)dy\\
+&amp;=\int\limits_{-5}^{5}y^2 \left(\frac{3}{500}(25-y^2)\right)dy\\
+&amp;=\left[-\frac{3}{2000}y^5+\frac{3}{40}y^3\right]_{-5}^5\\
+&amp;=5
+\end{align}
+\]</span></p>
+<p>variance <span class="math display">\[
+\begin{align}
+\sigma^2&amp;=E(Y^2)-\left[E(Y)\right]^2\\
+&amp;=5-0\\
+&amp;=5
+\end{align}
+\]</span></p>
+</div>
+<div id="b-mean-and-variance-of-train-is-late-in-hours" class="section level3">
+<h3>b Mean and variance of train is late in hours</h3>
+<p>Let Z show the time in Hours. So, Z can be <span class="math inline">\(Z=\frac{Y}{60}\)</span></p>
+<p>Computing Mean <span class="math display">\[
+\begin{align}
+E(Y)&amp;=E(\frac{Y}{60})\\
+&amp;=\frac{1}{60}* E(Y)\\
+&amp;=\frac{1}{60}*0 \\
+&amp;= 0
+\end{align}
+\]</span></p>
+Variance $$
+<span class="math display">\[\begin{align}
+Var(Z) &amp;= Var(\frac{Y}{60})\\
+&amp;=\frac{1}{60^2}*Var(Y)\\
+&amp;=\frac{1}{60^2}*5\\
+&amp;=\frac{1}{720}\\
+&amp;= 0.00138
+
+\end{align}\]</span>
+<p>$$</p>
+</div>
+<div id="c-mean-and-variance-of-train-is-late-in-minutes" class="section level3">
+<h3>c Mean and variance of train is late in minutes</h3>
+<p>We find the mean and variance of the amount of time in seconds the train is late</p>
+<p>So <span class="math inline">\(W=60Y\)</span></p>
+<p>Mean <span class="math display">\[
+\begin{align}
+E(W)&amp;=E(60 * Y)\\
+&amp;=60 * E(Y)\\
+&amp;=60*0\\
+&amp;= 0
+\end{align}
+\]</span></p>
+<p>Variance <span class="math display">\[
+\begin{align}
+Var(W) &amp;= Var(60*Y)\\
+&amp;= 60^2 * Var(Y)\\
+&amp;= 60^2 * 5\\
+&amp;= 18000
+\end{align}
+\]</span></p>
+</div>
+</div>
+<div id="q-16" class="section level2">
+<h2>Q 16</h2>
+<p>Data Givrn</p>
+<p><span class="math inline">\(\mu = 50\)</span> <span class="math inline">\(\sigma^2 = 3.2\)</span></p>
+<div id="a-py-45" class="section level3">
+<h3>a <span class="math inline">\(P(Y &gt; 45)\)</span></h3>
+<p><span class="math inline">\(P(Y &gt; 45) = 1- P(Y \leq 45)\)</span></p>
+<pre class="r"><code>ans = 1 - pnorm(45,50,3.2)
+ans</code></pre>
+<pre><code>## [1] 0.9409149</code></pre>
+</div>
+<div id="b-py-55" class="section level3">
+<h3>b <span class="math inline">\(P(Y &lt; 55)\)</span></h3>
+<pre class="r"><code>pnorm(55,50,3.2)</code></pre>
+<pre><code>## [1] 0.9409149</code></pre>
+</div>
+<div id="c-p51-y-52" class="section level3">
+<h3>c <span class="math inline">\(P(51 &lt; y &lt; 52)\)</span></h3>
+<pre class="r"><code>pnorm(52,50,3.2)-pnorm(51,50,3.2)</code></pre>
+<pre><code>## [1] 0.1113448</code></pre>
+</div>
+</div>
+<div id="q-17" class="section level2">
+<h2>Q 17</h2>
+<p>Given <span class="math inline">\(\mu = 605\)</span> <span class="math inline">\(\sigma^2 = 185\)</span></p>
+<div id="a-p500-y-700" class="section level3">
+<h3>a <span class="math inline">\(P(500 &lt; Y &lt; 700)\)</span></h3>
+<pre class="r"><code>pnorm(700,605,185)-pnorm(500,605,185)</code></pre>
+<pre><code>## [1] 0.4110396</code></pre>
+</div>
+<div id="b-p400-y-500" class="section level3">
+<h3>b <span class="math inline">\(P(400 &lt; Y &lt; 500)\)</span></h3>
+<pre class="r"><code>pnorm(500,605,185)-pnorm(400,605,185)</code></pre>
+<pre><code>## [1] 0.1512568</code></pre>
+</div>
+<div id="c-py-850" class="section level3">
+<h3>c <span class="math inline">\(P(Y &lt; 850)\)</span></h3>
+<pre class="r"><code>pnorm(850,605,185)</code></pre>
+<pre><code>## [1] 0.9073023</code></pre>
+</div>
+<div id="d-py-1000" class="section level3">
+<h3>d <span class="math inline">\(P(Y &gt; 1000)\)</span></h3>
+<p><span class="math inline">\(P(Y &gt; 1000) = 1- P(y \leq 1000)\)</span></p>
+<pre class="r"><code>ans = 1- pnorm(1000,605,185)
+ans</code></pre>
+<pre><code>## [1] 0.01637499</code></pre>
+</div>
+<div id="e-top-10-ratings" class="section level3">
+<h3>e Top 10% ratings</h3>
+<p>When only 10% cars exceed the ratings. It means that the rest of the cars sum upto 90% of the ratings. So we find the rating that the 90% of the cars fall in.</p>
+<pre class="r"><code>qnorm(0.9,605,185)</code></pre>
+<pre><code>## [1] 842.087</code></pre>
 </div>
 </div>
 </div>
