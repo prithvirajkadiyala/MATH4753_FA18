@@ -42,7 +42,7 @@ P(Novice \, will \, not \, identify| Matched \,Prints)&=1-P(Novice\, Identify|Ma
 $$
 
 ###c 
-Since, Novice has higher probability of failing to identifying the matched prints. It is possible that it will most likely be a novice that fails to identify the matched prints.
+The participant is more likely to be a novice because from the above calculations the probability that a novice will fail to identify the match given a pair of matched prints is greater whn compared to the probability that an expert wil fail to identify the match given a pair of matched prints.
 
 ## Q 2
 
@@ -162,6 +162,7 @@ $P(Y)= P(0) + P(1) + ... + P(20)$
 P=0.17+0.10+0.11+0.11+0.10+0.10+0.07+0.05+0.03+0.02+0.02+0.02+0.02+0.02+0.01+0.01+0.01+0.01+0.01+0.005+0.005
 P
 ```
+The probabilities lie betweeen 0 and 1 and the sum is 1. So there evidence is enough to satisy the probability distribution for a discrete random variable.
 
 ###b $P(Y \geq 10)$
 $P(Y \geq 10)=1-\sum P(Y \leq 9)$
@@ -173,11 +174,11 @@ P
 ###c Mean and Variance
 $Mean(\mu)=\sum_{0}^{20}y.P(y)$
 ```{r}
-mean = (0*0.17)+(1*0.10)+(2*0.11)+(3*0.11)+(4*0.10)+(5*0.10)+(6*0.07)+(7*0.05)+(8*0.03)+(9*0.02)+(10*0.02)+(11*0.02)+(12*0.02)+(13*0.02)+(14*0.01)+(15*0.01)+(16*0.01)+(17*0.01)+(18*0.01)+(19*0.005)+(20*0.005)
-mean
+mean1 = (0*0.17)+(1*0.10)+(2*0.11)+(3*0.11)+(4*0.10)+(5*0.10)+(6*0.07)+(7*0.05)+(8*0.03)+(9*0.02)+(10*0.02)+(11*0.02)+(12*0.02)+(13*0.02)+(14*0.01)+(15*0.01)+(16*0.01)+(17*0.01)+(18*0.01)+(19*0.005)+(20*0.005)
+mean1
 ```
 
-$Variance(\sigma^2) = \frac{1}{N}.\sum (x_i- \mu)^2$
+$Variance(\sigma^2) = \sum (y^2*p(y))-(mean1)^2$
 
 ```{r}
 y=c(0.17,0.10,0.11,0.11,0.10,0.10,0.07,0.05,0.03,0.02,0.02,0.02,0.02,0.02,0.01,0.01,0.01,0.01,0.01,0.005,0.005)
@@ -185,13 +186,19 @@ y=c(0.17,0.10,0.11,0.11,0.10,0.10,0.07,0.05,0.03,0.02,0.02,0.02,0.02,0.02,0.01,0
 
 ```{r}
 #Doing the summation part
+sum=0
 for (i in 1:length(y)) {
-    sum <- (y[i]-mean)^2
+    sum <- sum+((i-1)^2*y[i])
 }
-# we do 1/N now
-sum=sum/21
-sum
+# we do $-mean^2$ now
+ans = sum - mean1^2
+ans
 ```
+
+###d Interval with at least 75%
+According to chebyshev's rule. 75% of the data lies within the 2 standard deviations of the mean.
+So. The interval is (`r round(mean1-2*sqrt(ans),3)`,`r round(mean1+2*sqrt(ans),3)`)
+
 
 ## Q 9
 ###a P(Y=10)
@@ -209,22 +216,20 @@ pbinom(5,25,0.7)
 
 $Mean = n*p$
 ```{r}
-mean = 25*0.7
-mean
+mean2 = 25*0.7
+mean2
 ```
 
 $$
-Variance(\sigma^2) = n*p*q\\
-\sigma=\sqrt(npq)
+\sigma=npq
 $$
 ```{r}
-variance=25*0.7*0.3
-sqrt(variance)
+variance2=25*0.7*0.3
+variance2
 ```
 
 ###d Interpretation
-The results indicate that the number of foreign students graduating with a Ph.D. in Engineering in a group of 25 will be, on average, `r mean`. Also, according to Chebyshev's, at least 75% of the samples will be within 2 standard deviations from
-the mean or in the interval (`r round((mean - 2*sqrt(variance)),2)`, `r round((mean + 2*sqrt(variance)),2)`).
+The results indicate that the number of foreign students graduating with a Ph.D. in Engineering in a group of 25 will be, on average, `r mean2`. So approximatly `r round(mean2,0)` students earn their Ph.D degree out of 25 students with the standard deviation of 5.25
 
 ## Q 10
 ###a $P(Y=10)$

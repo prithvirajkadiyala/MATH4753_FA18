@@ -223,7 +223,7 @@ div.tocify {
 
 <h1 class="title toc-ignore">Assignment 2</h1>
 <h4 class="author"><em>Prithviaj Kadiyala</em></h4>
-<h4 class="date"><em>Sunday, September 23, 2018</em></h4>
+<h4 class="date"><em>Monday, September 24, 2018</em></h4>
 
 </div>
 
@@ -256,7 +256,7 @@ P(Novice \, will \, not \, identify| Matched \,Prints)&amp;=1-P(Novice\, Identif
 </div>
 <div id="c" class="section level3">
 <h3>c</h3>
-<p>Since, Novice has higher probability of failing to identifying the matched prints. It is possible that it will most likely be a novice that fails to identify the matched prints.</p>
+<p>The participant is more likely to be a novice because from the above calculations the probability that a novice will fail to identify the match given a pair of matched prints is greater whn compared to the probability that an expert wil fail to identify the match given a pair of matched prints.</p>
 </div>
 </div>
 <div id="q-2" class="section level2">
@@ -368,6 +368,7 @@ P</code></pre>
 <pre class="r"><code>P=0.17+0.10+0.11+0.11+0.10+0.10+0.07+0.05+0.03+0.02+0.02+0.02+0.02+0.02+0.01+0.01+0.01+0.01+0.01+0.005+0.005
 P</code></pre>
 <pre><code>## [1] 1</code></pre>
+<p>The probabilities lie betweeen 0 and 1 and the sum is 1. So there evidence is enough to satisy the probability distribution for a discrete random variable.</p>
 </div>
 <div id="b-py-geq-10" class="section level3">
 <h3>b <span class="math inline">\(P(Y \geq 10)\)</span></h3>
@@ -379,19 +380,24 @@ P</code></pre>
 <div id="c-mean-and-variance" class="section level3">
 <h3>c Mean and Variance</h3>
 <p><span class="math inline">\(Mean(\mu)=\sum_{0}^{20}y.P(y)\)</span></p>
-<pre class="r"><code>mean = (0*0.17)+(1*0.10)+(2*0.11)+(3*0.11)+(4*0.10)+(5*0.10)+(6*0.07)+(7*0.05)+(8*0.03)+(9*0.02)+(10*0.02)+(11*0.02)+(12*0.02)+(13*0.02)+(14*0.01)+(15*0.01)+(16*0.01)+(17*0.01)+(18*0.01)+(19*0.005)+(20*0.005)
-mean</code></pre>
+<pre class="r"><code>mean1 = (0*0.17)+(1*0.10)+(2*0.11)+(3*0.11)+(4*0.10)+(5*0.10)+(6*0.07)+(7*0.05)+(8*0.03)+(9*0.02)+(10*0.02)+(11*0.02)+(12*0.02)+(13*0.02)+(14*0.01)+(15*0.01)+(16*0.01)+(17*0.01)+(18*0.01)+(19*0.005)+(20*0.005)
+mean1</code></pre>
 <pre><code>## [1] 4.655</code></pre>
-<p><span class="math inline">\(Variance(\sigma^2) = \frac{1}{N}.\sum (x_i- \mu)^2\)</span></p>
+<p><span class="math inline">\(Variance(\sigma^2) = \sum (y^2*p(y))-(mean1)^2\)</span></p>
 <pre class="r"><code>y=c(0.17,0.10,0.11,0.11,0.10,0.10,0.07,0.05,0.03,0.02,0.02,0.02,0.02,0.02,0.01,0.01,0.01,0.01,0.01,0.005,0.005)</code></pre>
 <pre class="r"><code>#Doing the summation part
+sum=0
 for (i in 1:length(y)) {
-    sum &lt;- (y[i]-mean)^2
+    sum &lt;- sum+((i-1)^2*y[i])
 }
-# we do 1/N now
-sum=sum/21
-sum</code></pre>
-<pre><code>## [1] 1.029643</code></pre>
+# we do $-mean^2$ now
+ans = sum - mean1^2
+ans</code></pre>
+<pre><code>## [1] 19.85597</code></pre>
+</div>
+<div id="d-interval-with-at-least-75" class="section level3">
+<h3>d Interval with at least 75%</h3>
+<p>According to chebyshev’s rule. 75% of the data lies within the 2 standard deviations of the mean. So. The interval is (-4.257,13.567)</p>
 </div>
 </div>
 <div id="q-9" class="section level2">
@@ -410,20 +416,19 @@ dbinom(10,25,0.7)</code></pre>
 <div id="c-mean-and-variance-1" class="section level3">
 <h3>c Mean and Variance</h3>
 <p><span class="math inline">\(Mean = n*p\)</span></p>
-<pre class="r"><code>mean = 25*0.7
-mean</code></pre>
+<pre class="r"><code>mean2 = 25*0.7
+mean2</code></pre>
 <pre><code>## [1] 17.5</code></pre>
 <p><span class="math display">\[
-Variance(\sigma^2) = n*p*q\\
-\sigma=\sqrt(npq)
+\sigma=npq
 \]</span></p>
-<pre class="r"><code>variance=25*0.7*0.3
-sqrt(variance)</code></pre>
-<pre><code>## [1] 2.291288</code></pre>
+<pre class="r"><code>variance2=25*0.7*0.3
+variance2</code></pre>
+<pre><code>## [1] 5.25</code></pre>
 </div>
 <div id="d-interpretation" class="section level3">
 <h3>d Interpretation</h3>
-<p>The results indicate that the number of foreign students graduating with a Ph.D. in Engineering in a group of 25 will be, on average, 17.5. Also, according to Chebyshev’s, at least 75% of the samples will be within 2 standard deviations from the mean or in the interval (12.92, 22.08).</p>
+<p>The results indicate that the number of foreign students graduating with a Ph.D. in Engineering in a group of 25 will be, on average, 17.5. So approximatly 18 students earn their Ph.D degree out of 25 students with the standard deviation of 5.25</p>
 </div>
 </div>
 <div id="q-10" class="section level2">
