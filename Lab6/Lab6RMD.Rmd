@@ -1,0 +1,76 @@
+---
+title: "Lab 6"
+author: "Prithviraj Kadiyala"
+date: "September 26, 2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+#Task 1
+```{r}
+getwd()
+```
+
+#Task 2
+##layout(4)
+```{r}
+layout(matrix(1:4, nr=2,nc=2))
+
+layout.show(4)
+
+curve(dnorm(x, mean=10,sd=4),xlim=c(-10,30))
+
+curve(dnorm(x, mean=10,sd=2),xlim=c(-10,30))
+
+curve(dnorm(x, mean=5,sd=10),xlim=c(-20,30))
+
+curve(dnorm(x, mean=5,sd=0.5),xlim=c(-10,30))
+
+```
+
+##Area and Probabilities
+```{r}
+layout(1)
+layout.show(1)
+curve(dnorm(x, mean=0,sd=1),xlim=c(-4,4))
+xcurve=seq(2,5,length=1000)
+ycurve=dnorm(xcurve,mean=0,sd=1)
+polygon(c(2,xcurve,5),c(0,ycurve,0),col="Red")
+xc=(2+4)/2
+yc=0.5*dnorm(xc,0,1)
+text(x=xc,y=yc,paste("P(Y>=2)","=",round((1-pnorm(2,mean=0,sd=1)),4)))
+
+curve(dnorm(x, mean=4,sd=2),xlim=c(-2,10),xlab="Y",main="1 < Y < 2",ylab="Normal Density")
+xcurve=seq(1,5,length=1000)
+ycurve=dnorm(xcurve,mean=4,sd=2)
+polygon(c(1,xcurve,5),c(0,ycurve,0),col="Red")
+xc=(1+5)/2
+yc=0.5*dnorm(xc,4,2)
+text(x=xc,y=yc,paste("P(1 <= Y < 5)","=",round(pnorm(5,mean=4,sd=2)-pnorm(1,mean=4,sd=2),4)))
+
+curve(dnorm(x, mean=10,sd=4),xlim=c(-2,22))
+xcurve=seq(-2,10,length=1000)
+ycurve=dnorm(xcurve,mean=10,sd=4)
+polygon(c(-2,xcurve,10),c(0,ycurve,0),col="Red")
+xc=(-1+10)/2
+yc=0.5*dnorm(xc,10,4)
+text(x=xc,y=yc,paste("P(Y<10)","=",round(pnorm(10,mean=10,sd=4),4)))
+
+curve(dnorm(x, mean=-2,sd=1/2),xlim=c(-4,0))
+xcurve=seq(-3,-2,length=1000)
+ycurve=dnorm(xcurve,mean=-2,sd=1/2)
+polygon(c(-3,xcurve,-2),c(0,ycurve,0),col="Red")
+xc=(-3-2)/2
+yc=0.5*dnorm(xc,-2,0.5)
+text(x=xc,y=yc,paste("P(-3<Y<-2)","=",round(pnorm(-2,mean=-2,sd=1/2)-pnorm(-3,mean=-2,sd=1/2),4)))
+```
+
+#Task 3
+##Gamma distribution
+```{r}
+
+```
+
