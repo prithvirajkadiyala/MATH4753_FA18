@@ -2,7 +2,14 @@
 title: "Lab 6"
 author: "Prithviraj Kadiyala"
 date: "September 26, 2018"
-output: html_document
+output:
+  html_document:
+    fig_caption: yes
+    keep_md: yes
+    number_sections: yes
+    toc: yes
+    toc_float: yes
+    theme: spacelab
 ---
 
 ```{r setup, include=FALSE}
@@ -43,7 +50,7 @@ xc=(2+4)/2
 yc=0.5*dnorm(xc,0,1)
 text(x=xc,y=yc,paste("P(Y>=2)","=",round((1-pnorm(2,mean=0,sd=1)),4)))
 
-curve(dnorm(x, mean=4,sd=2),xlim=c(-2,10),xlab="Y",main="1 < Y < 2",ylab="Normal Density")
+curve(dnorm(x, mean=4,sd=2),xlim=c(-2,10),xlab="Y",ylab="Normal Density")
 xcurve=seq(1,5,length=1000)
 ycurve=dnorm(xcurve,mean=4,sd=2)
 polygon(c(1,xcurve,5),c(0,ycurve,0),col="Red")
@@ -59,18 +66,200 @@ xc=(-1+10)/2
 yc=0.5*dnorm(xc,10,4)
 text(x=xc,y=yc,paste("P(Y<10)","=",round(pnorm(10,mean=10,sd=4),4)))
 
-curve(dnorm(x, mean=-2,sd=1/2),xlim=c(-4,0))
+curve(dnorm(x, mean=-2,sd=0.5),xlim=c(-4,0))
 xcurve=seq(-3,-2,length=1000)
 ycurve=dnorm(xcurve,mean=-2,sd=1/2)
 polygon(c(-3,xcurve,-2),c(0,ycurve,0),col="Red")
 xc=(-3-2)/2
 yc=0.5*dnorm(xc,-2,0.5)
-text(x=xc,y=yc,paste("P(-3<Y<-2)","=",round(pnorm(-2,mean=-2,sd=1/2)-pnorm(-3,mean=-2,sd=1/2),4)))
+text(x=xc,y=yc,paste("P(-3<Y<-2)","=",round(pnorm(-2,mean=-2,sd=0.5)-pnorm(-3,mean=-2,sd=0.5),4)))
 ```
 
 #Task 3
 ##Gamma distribution
 ```{r}
+curve(dgamma(x,shape=1,scale=1),xlim=c(0,10),ylim=c(0,1),col="Red",lwd=2,ylab="Gamma density", main="Beta=1")
+xc=5
+yc=0.6
+text(x=xc,y=yc,paste("alpha=",1),col = "Red")
 
+curve(dgamma(x,shape=3,scale=1),xlim=c(0,10),ylim=c(0,1),add=TRUE,lwd=2)
+xc=5
+yc=0.5
+text(x=xc,y=yc,paste("alpha=",3))
+
+curve(dgamma(x,shape=5,scale=1),xlim=c(0,10),ylim=c(0,1),add=TRUE, col="Blue",lwd=2)
+xc=5
+yc=0.4
+text(x=xc,y=yc,paste("alpha=",5),col = "Blue")
+```
+
+```{r}
+curve(dgamma(x, shape=3,scale=2),xlim=c(0,20),ylim=c(0,0.2),ylab="Gamma density")
+xcurve=seq(2,5,length=1000)
+ycurve=dgamma(xcurve,shape=3,scale=2)
+polygon(c(2,xcurve,5),c(0,ycurve,0),col="Red")
+xc=3.5
+yc=0.07
+text(x=xc,y=yc,paste("P(2<Y<5)","=",round(pgamma(5,shape=3,scale=2)-pgamma(2,shape=3,scale=2),4)))
+
+curve(dgamma(x, shape=6,scale=3),xlim=c(0,40),ylim=c(0,0.2),ylab="Gamma density")
+xcurve=seq(1,4,length=1000)
+ycurve=dgamma(xcurve,shape=6,scale=3)
+polygon(c(1,xcurve,4),c(0,ycurve,0),col="Red")
+xc=3
+yc=0.10
+text(x=xc,y=yc,paste("P(1=<Y<=4)","=",round(pgamma(4,shape=6,scale=3)-pgamma(1,shape=6,scale=3),4)))
+
+curve(dgamma(x, shape=2,scale=4),xlim=c(0,30),ylim=c(0,0.2),ylab="Gamma density")
+xcurve=seq(3,6,length=1000)
+ycurve=dgamma(xcurve,shape=2,scale=4)
+polygon(c(3,xcurve,6),c(0,ycurve,0),col="Red")
+xc=5
+yc=0.05
+text(x=xc,y=yc,paste("P(3=<Y<6)","=",round(pgamma(6,shape=2,scale=4)-pgamma(3,shape=2,scale=4),4)))
+```
+
+#Task 4
+##Layout graphs
+```{r}
+layout(matrix(1:4, nr=2,nc=2, byrow=TRUE))
+curve(dchisq(x,df=1),xlim=c(0,10),ylim=c(0,1),col="Red",lwd=2,
+      ylab="Chisq density", main="df=1")
+curve(dchisq(x,df=2),xlim=c(0,10),ylim=c(0,1),col="Red",lwd=2,
+      ylab="Chisq density", main="df=2")
+curve(dchisq(x,df=4),xlim=c(0,15),ylim=c(0,0.4),col="Red",lwd=2,
+      ylab="Chisq density", main="df=4")
+curve(dchisq(x,df=20),xlim=c(0,60),ylim=c(0,0.2),col="Red",lwd=2,
+      ylab="Chisq density", main="df=20")
+```
+
+##$P(2 \leq Y \leq 4)$
+```{r}
+curve(dchisq(x, df=2),xlim=c(0,10),ylim=c(0,1),ylab="Gamma density")
+xcurve=seq(2,4,length=1000)
+ycurve=dchisq(xcurve,df=2)
+polygon(c(2,xcurve,4),c(0,ycurve,0),col="Red")
+xc=3
+yc=0.2
+text(x=xc,y=yc,paste("P(2=<Y<=4)","=",round(pchisq(4,df=2)-pchisq(2,df=2),4)))
+```
+
+##$P(3 \leq Y \leq 5)$
+```{r}
+curve(dchisq(x, df=3),xlim=c(0,10),ylim=c(0,0.5),ylab="Gamma density")
+xcurve=seq(3,5,length=1000)
+ycurve=dchisq(xcurve,df=3)
+polygon(c(3,xcurve,5),c(0,ycurve,0),col="Red")
+xc=4
+yc=0.1
+text(x=xc,y=yc,paste("P(3=<Y<=5)","=",round(pchisq(5,df=3)-pchisq(3,df=3),4)))
+```
+
+##$P(10 < Y \leq 21)$
+```{r}
+curve(dchisq(x, df=20),xlim=c(0,60),ylim=c(0,0.1),ylab="Gamma density")
+xcurve=seq(10,21,length=1000)
+ycurve=dchisq(xcurve,df=20)
+polygon(c(10,xcurve,21),c(0,ycurve,0),col="Red")
+xc=15
+yc=0.03
+text(x=xc,y=yc,paste("P(20=<Y<=21)","=",round(pchisq(21,df=20)-pchisq(10,df=20),4)))
+
+```
+
+#Task 5
+##Layout Graphs
+```{r}
+layout(matrix(1:4, nr=2,nc=2))
+curve(dweibull(x,shape=1,scale=1),xlim=c(0,10),ylim=c(0,1),col="Red",lwd=2, main="shape=1,scale=1")
+curve(dweibull(x,shape=3,scale=1),xlim=c(0,5),ylim=c(0,2),col="Red",lwd=2, main="shape=3,scale=1")
+curve(dweibull(x,shape=1,scale=3),xlim=c(0,10),ylim=c(0,1),col="Red",lwd=2, main="shape=1,scale=3")
+curve(dweibull(x,shape=2,scale=2),xlim=c(0,10),ylim=c(0,1),col="Red",lwd=2, main="shape=2,scale=2")
+```
+
+##$P(1 \leq Y \leq 5)$
+```{r}
+curve(dweibull(x, shape=1,scale=1),xlim=c(0,10),ylim=c(0,1),main="shape=1,scale=1")
+xcurve=seq(1,5,length=1000)
+ycurve=dweibull(xcurve,shape=1,scale=1)
+polygon(c(1,xcurve,5),c(0,ycurve,0),col="Red")
+xc=3
+yc=0.1
+text(x=xc,y=yc,paste("P(1=<Y<=5)","=",round(pweibull(5,shape=1,scale=1)-pweibull(1,shape=1,scale=1),4)))
+
+```
+
+##$P(2 \leq Y \leq 5)$
+```{r}
+curve(dweibull(x, shape=1,scale=3),xlim=c(0,10),ylim=c(0,1),main="shape=1,scale=3")
+xcurve=seq(2,5,length=1000)
+ycurve=dweibull(xcurve,shape=1,scale=3)
+polygon(c(2,xcurve,5),c(0,ycurve,0),col="Red")
+xc=3.5
+yc=0.1
+text(x=xc,y=yc,paste("P(2=<Y<=5)","=",round(pweibull(5,shape=1,scale=3)-pweibull(2,shape=1,scale=3),4)))
+
+```
+
+##$P(1 \leq Y \leq 2)$
+```{r}
+curve(dweibull(x, shape=3,scale=1),xlim=c(0,4),ylim=c(0,2),main="shape=3,scale=1")
+xcurve=seq(1,2,length=1000)
+ycurve=dweibull(xcurve,shape=3,scale=1)
+polygon(c(1,xcurve,2),c(0,ycurve,0),col="Red")
+xc=1.5
+yc=0.5
+text(x=xc,y=yc,paste("P(1=<Y<=2)","=",round(pweibull(2,shape=3,scale=1)-pweibull(1,shape=3,scale=1),4)))
+```
+
+#Task 6
+##Layout Graphs
+```{r}
+layout(matrix(1:4, nr=2,nc=2))
+
+curve(dbeta(x,2,3),xlim=c(0,1),col="Black",ylab="beta density")
+text(x=0.3,y=0.5,paste("alpha=2,Beta=3"))
+curve(dbeta(x,1,4),xlim=c(0,1),col="Black",ylab="beta density")
+text(x=0.6,y=2,paste("alpha=1,Beta=4"))
+curve(dbeta(x,3,5),xlim=c(0,1),col="Black",ylab="beta density")
+text(x=0.3,y=0.5,paste("alpha=3,Beta=5"))
+curve(dbeta(x,4,2),xlim=c(0,1),col="Black",ylab="beta density")
+text(x=0.6,y=0.5,paste("alpha=4,Beta=2"))
+
+```
+
+##P(.5 < Y < 1)
+```{r}
+curve(dbeta(x,3,4),xlim=c(0,1),ylim=c(0,3),col="Black",lwd=2,ylab="beta density", main="P(Y>0.5)")
+xcurve=seq(.5,1,length=100)
+ycurve=dbeta(xcurve,3,4)
+polygon(c(.5,xcurve,1),c(0,ycurve,0),col="Red")
+text(x=0.6,y=2.25,paste("P(Y>.5)","=",round(1 - pbeta(.5,3,4),4)))
+```
+
+##P(Y < 0.3)
+```{r}
+curve(dbeta(x,6,3),xlim=c(0,1),ylim=c(0,5),col="Black",lwd=2,ylab="beta density",main="P(Y<.3)")
+xcurve=seq(0,.3,length=100)
+ycurve=dbeta(xcurve,6,3)
+polygon(c(0,xcurve,.3),c(0,ycurve,0),col="Red")
+text(x=0.2,y=1,paste("P(Y<0.3)","=",round(pbeta(.3,6,3),4)))
+```
+
+##P(.5 < Y < .8)
+```{r}
+curve(dbeta(x,2,3),xlim=c(0,1),ylim=c(0,5),col="Black",lwd=2,ylab="beta density", main="P(.2<Y<.6)")
+xcurve=seq(.2,.6,length=100)
+ycurve=dbeta(xcurve,2,3)
+polygon(c(.2,xcurve,.6),c(0,ycurve,0),col="Red")
+text(x=0.4,y=2.5,paste("P(.2<Y<.6)","=",round(pbeta(.6,2,3) - pbeta(.2,2,3),4)))
+```
+
+#Task 7
+```{r}
+vec1=seq(1,4,length=100)
+vec2=dgamma(vec1,shape=6,scale=3)
+dexp(vec2,rate=1)
 ```
 
