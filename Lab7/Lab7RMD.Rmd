@@ -64,12 +64,83 @@ chisq1 = mychisim(n1=100,iter=1000,mean1=10,sigma1=4,x=120,y=0.03, ymax=0.04)
 chisq1 = mychisim(n1=200,iter=1000,mean1=10,sigma1=4,x=220,y=0.02, ymax=0.025)
 ```
 
+##histogram
 ```{r}
-hist(chisq$w)
+mu1 = mean(chisq$w)
+hist(chisq$w,col="blue")
+abline(v = mean(chisq$w), col = "orange", lwd = 2)
+text(mu1, 100 , round(mu1, 2))
+leftlimit = mu1-sd(chisq$w)
+text(leftlimit, max(mu1)/2 , round(leftlimit, 2))
+rightlimit= mu1+sd(chisq$w)
+text(rightlimit, max(mu1)/2 , round(rightlimit, 2))
+segments(x0=leftlimit,y0=0,x1=rightlimit,y1=0, col="black",lwd=3)
+legend("topright", c("Plot", "Mean", "StDev"), fill=c("blue", "orange", "black"))
 ```
 
 #Task 3
-##mychisim() function
+##myTsim() function
+```{r}
+myTsim<-function(n1=10,sigma1=4,mean1=10,iter=1000,ymax=0.1,x=2,y=0.3,...){    # adjust ymax to make graph fit
+y1=rnorm(n1*iter,mean=mean1,sd=sigma1)# generate iter samples of size n1
+
+data1.mat=matrix(y1,nrow=n1,ncol=iter,byrow=TRUE) # Each column is a sample size n1
+
+sd1=apply(data1.mat,2,sd) # sd
+ybar=apply(data1.mat,2,mean)  # mean
+
+w=(ybar-mean1)/(sd1/sqrt(n1))      #T stat
+
+hist(w,freq=FALSE, ylim=c(0,ymax), # Histogram with annotation
+main=substitute(paste("Sample size = ",n[1]," = ",n1," statistic = ",T," iterations= ",iter)),
+xlab=expression(paste(T, "Statistic",sep=" ")), las=1)
+lines(density(w),col="Blue",lwd=3) # add a density plot
+curve(dt(x,n1-1),add=TRUE,col="Red",lty=2,lwd=3) # add a theoretical curve
+title=expression(T==frac((bar(y)-mu),s/sqrt(n1))) #mathematical annotation -see ?plotmath
+legend(x,y,c("Simulated","Theoretical"),col=c("Blue","Red"),lwd=4,lty=1:2,bty="n",title=title) # Legend #
+return(list(w=w,summary=summary(w),sd=sd(w),fun="T")) # some output to use if needed
+}
+obj=myTsim(iter=10000,ymax=0.45)
+```
+
+##n1=10
+```{r}
+T=myTsim(ymax=0.45)
+```
+
+##n1=20
+```{r}
+obj=myTsim(n1=20,ymax=0.45,x=1,y=0.38)
+```
+
+##n1=100
+```{r}
+obj=myTsim(n1=100,ymax=0.45,x=1,y=0.38)
+```
+
+##n1=200
+```{r}
+obj=myTsim(n1=200,ymax=0.45)
+```
+
+
+##hist of T$w
+```{r}
+T = myTsim(n1=10,iter=1500, mean1=20,sigma1=10,ymax=0.4)
+mu1 = mean(T$w)
+hist(T$w, col="blue")
+abline(v = mean(T$w), col = "orange", lwd = 2)
+text(mu1, 200 , round(mu1, 2))
+leftlimit = mu1-sd(T$w)
+text(2*leftlimit, max(mu1)/2 , round(2*leftlimit, 2))
+rightlimit= mu1+sd(T$w)
+text(2*rightlimit, max(mu1)/2 , round(2*rightlimit, 2))
+segments(x0=2*leftlimit,y0=mu1/2,x1=2*rightlimit,y1=mu1/2, col="black",lwd=3)
+legend("topright", c("Plot", "Mean", "StDev"), fill=c("blue", "orange", "black"))
+```
+
+#Task 4
+##Mychisim2() function
 ```{r}
 #### Two pop sampling
 mychisim2<-function(n1=10,n2=14,sigma1=3,sigma2=3,mean1=5,mean2=10,iter=1000,ymax=0.07,x=40,y=0.04,...){    # adjust ymax to make graph fit
@@ -90,7 +161,189 @@ title=expression(chi^2==frac((n[1]+n[2]-2)*S[p]^2,sigma^2)) #mathematical annota
 legend(x,y,c("Simulated","Theoretical"),col=c("Blue","Red"),lwd=4,lty=1:2,bty="n",title=title) # Legend #
 return(list(w=w,summary=summary(w),sd=sd(w),fun="Chi-sq")) # some output to use if needed
 }
-windows()
-mychisim2(iter=10000)
+my=mychisim2(iter=10000)
 ```
+
+##n1=10,n2=10
+```{r}
+obj=mychisim2(n1=10,n2=10,mean1=5,mean2=10,sigma1 = 4, sigma2=4, iter=1000,x=30)
+```
+
+##n1=20,n2=10
+```{r}
+obj=mychisim2(n1=20,n2=10,mean1=3,mean2=5,sigma1 = 10, sigma2=10, iter=1000,x=40)
+```
+
+##n1=50,n2=50
+```{r}
+obj=mychisim2(n1=50,n2=50,mean1=5,mean2=10,sigma1 = 4, sigma2=4, iter=10000,x=120,ymax=0.055)
+```
+
+##n1=80,n2=50
+```{r}
+obj=mychisim2(n1=80,n2=50,mean1=3,mean2=5,sigma1 = 10, sigma2=10, iter=10000,x=150,ymax=0.05)
+```
+
+##iter=10000 and histogram
+```{r}
+obj=mychisim2(iter=10000,x=35)
+```
+
+```{r}
+mu1 = mean(obj$w)
+hist(obj$w,col="blue")
+abline(v = mean(obj$w), col = "orange", lwd = 2)
+text(mu1, 500 , round(mu1, 2))
+leftlimit = mu1-sd(obj$w)
+text(leftlimit, 0 , round(leftlimit, 2))
+rightlimit= mu1+sd(obj$w)
+text(rightlimit, 0 , round(rightlimit, 2))
+segments(x0=leftlimit,y0=0,x1=rightlimit,y1=0, col="black",lwd=3)
+legend("topright", c("Plot", "Mean", "StDev"), fill=c("blue", "orange", "black"))
+```
+
+
+#Task 5
+##myTsim2() function
+```{r}
+myTsim2<-function(n1=10,n2=14,sigma1=3,sigma2=3,mean1=5,mean2=10,iter=1000,ymax=0.5,x=2,y=0.4,...){
+y1=rnorm(n1*iter,mean=mean1,sd=sigma1)# generate iter samples of size n1
+y2=rnorm(n2*iter,mean=mean2,sd=sigma2)
+data1.mat=matrix(y1,nrow=n1,ncol=iter,byrow=TRUE) # Each column is a sample size n1
+data2.mat=matrix(y2,nrow=n2,ncol=iter,byrow=TRUE)
+ssq1=apply(data1.mat,2,var) # ssq1 is s squared
+ybar1= apply(data1.mat,2,mean)
+ssq2=apply(data2.mat,2,var)
+ybar2=apply(data2.mat,2,mean)
+spsq=((n1-1)*ssq1 + (n2-1)*ssq2)/(n1+n2-2) # pooled s squared
+w=((ybar1-ybar2)-(mean1-mean2))/sqrt(spsq*(1/n1+1/n2))#sigma1=sigma2,  Chi square stat
+hist(w,freq=FALSE, ylim=c(0,ymax), # Histogram with annotation
+main=substitute(paste("Sample size = ",n[1]+n[2]," = ",n1+n2," statistic = ",T)),
+xlab=paste(" T Statistic",sep=""), las=1)
+lines(density(w),col="Blue",lwd=3) # add a density plot
+curve(dt(x,n1+n2-2),add=TRUE,col="Red",lty=2,lwd=3) # add a theoretical curve
+title=expression(T==frac((bar(Y)[1]-bar(Y)[2])-(mu[1]-mu[2]),S[p]*sqrt(frac(1,n[1])+frac(1,n[2])))) #mathematical annotation -see ?plotmath
+legend(x,y,c("Simulated","Theoretical"),col=c("Blue","Red"),lwd=4,lty=1:2,bty="n",title=title)# Legend #
+return(list(w=w,summary=summary(w),sdw=sd(w),fun="T")) # some output to use if needed
+}
+my=myTsim2(iter=10000)
+```
+
+
+##n1=10,n2=10
+```{r}
+obj=myTsim2(mean2=10,x=1,y=0.5,ymax=0.7)
+```
+
+##n1=20,n2=10
+```{r}
+obj=myTsim2(n1=20,n2=10,mean1=3,mean2=5,sigma1=10,sigma2=10,x=2,y=0.3)
+```
+
+##n1=50,n2=50
+```{r}
+obj=myTsim2(n1=50,n2=50,mean2=10,iter=10000,x=2,y=0.3)
+```
+
+##n1=80,n2=50
+```{r}
+obj=myTsim2(n1=80,n2=50,mean1=3,sigma1=10,sigma2=10,iter=10000,x=2,y=0.3)
+```
+
+
+##iter=10000 and histogram
+```{r}
+T2=myTsim2(iter=10000,x=2,y=0.4)
+mu1 = mean(T2$w)
+hist(T2$w,col="blue")
+abline(v = mean(T2$w), col = "orange", lwd = 2)
+text(mu1, 500 , round(mu1, 2))
+leftlimit = mu1-sd(T2$w)
+text(leftlimit, 0 , round(leftlimit, 2))
+rightlimit= mu1+sd(T2$w)
+text(rightlimit, 0 , round(rightlimit, 2))
+segments(x0=leftlimit,y0=0,x1=rightlimit,y1=0, col="black",lwd=3)
+legend("topright", c("Plot", "Mean", "StDev"), fill=c("blue", "orange", "black"))
+```
+
+#Task 6
+##myfsim2() function
+```{r}
+myFsim2<-function(n1=10,n2=14,sigma1=3,sigma2=2,mean1=5,mean2=10,iter=1000,ymax=0.9,x=6,y=0.5,...){
+y1=rnorm(n1*iter,mean=mean1,sd=sigma1)# generate iter samples of size n1
+y2=rnorm(n2*iter,mean=mean2,sd=sigma2)
+data1.mat=matrix(y1,nrow=n1,ncol=iter,byrow=TRUE) # Each column is a sample size n1
+data2.mat=matrix(y2,nrow=n2,ncol=iter,byrow=TRUE)
+ssq1=apply(data1.mat,2,var) # ssq1 is s squared
+ssq2=apply(data2.mat,2,var)
+#spsq=((n1-1)*ssq1 + (n2-1)*ssq2)/(n1+n2-2) # pooled s squared
+w=ssq1*sigma2^2/(ssq2*sigma1^2) #
+hist(w,freq=FALSE, ylim=c(0,ymax), # Histogram with annotation
+main=substitute(paste("Sample size = ",n[1]+n[2]," = ",n1+n2," statistic = ",F)),
+xlab=paste("F Statistic",sep=""), las=1)
+lines(density(w),col="Blue",lwd=3) # add a density plot
+curve(df(x,n1-1,n2-1),xlim=c(0,6),add=TRUE,col="Red",lty=2,lwd=3) # add a theoretical curve
+title=expression(F==frac(s[1]^2,s[2]^2)*frac(sigma[2]^2,sigma[1]^2)) #mathematical annotation -see ?plotmath
+legend(x,y,c("Simulated","Theoretical"),col=c("Blue","Red"),lwd=4,lty=1:2,bty="n",title=title)# Legend #
+return(list(w=w,summary=summary(w),sd=sd(w),fun="F")) # some output to use if needed
+}
+my=myFsim2(iter=10000)
+
+```
+
+
+##$\mu=10$
+```{r}
+obj=myFsim2(mean2=10,x=3,y=0.6)
+```
+
+##n1=20,n2=10
+```{r}
+obj=myFsim2(n1=20,mean1=3,sigma1=10,sigma2=10,x=3,y=0.6)
+```
+
+##n1=50,n2=50
+```{r}
+obj=myFsim2(n1=50,n2=50,mean2=10,iter=10000,ymax = 1.6,x=3,y=1)
+```
+
+##n1=80,n2=50
+```{r}
+obj=myFsim2(n1=80,n2=50,mean1=3,sigma1=10,sigma2=10,iter=10000,ymax = 1.8,x=3,y=1)
+```
+
+
+##hist of iter=10000
+```{r}
+F2=myFsim2(iter=10000,x=3,y=0.6)
+mu1 = mean(F2$w)
+hist(F2$w,col="blue")
+abline(v = mean(F2$w), col = "orange", lwd = 2)
+text(mu1, 500 , round(mu1, 2))
+leftlimit = mu1-sd(F2$w)
+text(leftlimit, 0 , round(leftlimit, 2))
+rightlimit= mu1+sd(F2$w)
+text(rightlimit, 0 , round(rightlimit, 2))
+segments(x0=leftlimit,y0=0,x1=rightlimit,y1=0, col="black",lwd=3)
+legend("topright", c("Plot", "Mean", "StDev"), fill=c("blue", "orange", "black"))
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
