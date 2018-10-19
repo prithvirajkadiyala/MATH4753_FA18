@@ -151,7 +151,7 @@ myboot2(10000,x=sam,fun=function(x) var(x),alpha=0.20,xlab="var(x)",col="Blue",c
 #Task 4
 ##myboot2() edited
 ```{r}
-myboot21<-function(iter=10000,x,fun="mean",alpha=0.05,cx=1.5,...){  #Notice where the ... is repeated in the code
+myboot21<-function(iter=10000,x,fun="mean",alpha=0.05,...){  #Notice where the ... is repeated in the code
   n=length(x)   #sample size
   
   y=sample(x,n*iter,replace=TRUE)
@@ -172,32 +172,132 @@ myboot21<-function(iter=10000,x,fun="mean",alpha=0.05,cx=1.5,...){  #Notice wher
   pte=apply(mat,2,fun)
   abline(v=pte,lwd=3,col="Black")# Vertical line
   segments(ci[1],0,ci[2],0,lwd=4)      #Make the segment for the ci
-  text(ci[1],0,paste("(",round(ci[1],2),sep=""),col="Red",cex=cx)
-  text(ci[2],0,paste(round(ci[2],2),")",sep=""),col="Red",cex=cx)
+  text(ci[1],0,paste("(",round(ci[1],2),sep=""),col="Red",cex=1)
+  text(ci[2],0,paste(round(ci[2],2),")",sep=""),col="Red",cex=1)
   
   # plot the point estimate 1/2 way up the density
-  text(pte,max(para$density)/2,round(pte,2),cex=cx)
+  text(pte,max(para$density)/2,round(pte,2),cex=1)
   
-  return(list(ci=ci,fun=fun,x=x, xstat=xstat))# Some output to use if necessary
+  m=mean(x)
+  return(list(ci=ci,fun=fun,m=m,xstat=xstat))# Some output to use if necessary
 }
 ```
 
 ##Barplot
 ```{r}
 #barplot of xstat
-sam=c(1,1,1,2,2,2,2,3,3,3,4,4)
-data = myboot21(10000,x=sam,fun=function(x) median(x),xlab="median(x)",col="Blue",cx=1.5)
-barplot(data$xstat, xlab="iter", ylab="xstat")
+sam=c(1,1,1,2,2,2,2,3,3,3,4,4) 
+data=myboot21(100,x=sam,fun="median" ,alpha=0.05,xlab="median(x)",col="Blue")
+barplot(data$xstat, main="Barplot of xstat",col="Blue")
 ```
 
 ##(L,U)
 ```
-From the graph (L,U) = (0.5,3)
+From the graph (L,U) = (1.5,3)
+```
+
+#Task 5
+##Alpha=95%
+```{r}
+set.seed(39); sam=rnorm(25,mean=25,sd=10)
+myboot2(10000,x=sam,fun=function(x) mean(x)/median(x),alpha=0.05,xlab="mean(x)/median(x)",col="Green",cx=1.5)
+
+set.seed(30); sam=rchisq(20,df=3)
+myboot2(10000,x=sam,fun=function(x) mean(x)/median(x),alpha=0.05,xlab="mean(x)/median(x)",col="Green",cx=1.5)
+
+set.seed(40); sam=rgamma(30,shape=2,scale=3)
+myboot2(10000,x=sam,fun=function(x) mean(x)/median(x),alpha=0.05,xlab="mean(x)/median(x)",col="Green",cx=1.5)
+
+set.seed(10); sam=rbeta(20,shape1=3,shape2=4)
+myboot2(10000,x=sam,fun=function(x) mean(x)/median(x),alpha=0.05,xlab="mean(x)/median(x)",col="Green",cx=1.5) 
+```
+
+##Alpha=70%
+```{r}
+set.seed(39); sam=rnorm(25,mean=25,sd=10)
+myboot2(10000,x=sam,fun=function(x) mean(x)/median(x),alpha=0.3,xlab="mean(x)/median(x)",col="Green",cx=1.5)
+
+set.seed(30); sam=rchisq(20,df=3)
+myboot2(10000,x=sam,fun=function(x) mean(x)/median(x),alpha=0.3,xlab="mean(x)/median(x)",col="Green",cx=1.5)
+
+set.seed(40); sam=rgamma(30,shape=2,scale=3)
+myboot2(10000,x=sam,fun=function(x) mean(x)/median(x),alpha=0.3,xlab="mean(x)/median(x)",col="Green",cx=1.5)
+
+set.seed(10); sam=rbeta(20,shape1=3,shape2=4)
+myboot2(10000,x=sam,fun=function(x) mean(x)/median(x),alpha=0.3,xlab="mean(x)/median(x)",col="Green",cx=1.5) 
+```
+
+#Task 6
+##Distributions
+```{r}
+?distributions
+```
+
+##samples
+###Cauchy
+```{r}
+sam = rcauchy(20, 2, 2)
+myboot2(10000,x=sam,fun=function(x) mean(x),alpha=0.20,xlab="mean(x)",col="Red",cx=1.5)
+myboot2(10000,x=sam,fun=function(x) median(x),alpha=0.20,xlab="median(x)",col="Red",cx=1.5)
+```
+
+###Hyper geometric
+```{r}
+sam = rhyper(30, 4, 6, 4)
+myboot2(10000,x=sam,fun=function(x) mean(x),alpha=0.20,xlab="mean(x)",col="Green",cx=1.5)
+myboot2(10000,x=sam,fun=function(x) median(x),alpha=0.20,xlab="median(x)",col="Green",cx=1.5)
 ```
 
 
+###Poisson
+```{r}
+sam = rpois(25, 4)
+myboot2(10000,x=sam,fun=function(x) mean(x),alpha=0.20,xlab="mean(x)",col="Blue",cx=1.5)
+myboot2(10000,x=sam,fun=function(x) median(x),alpha=0.20,xlab="median(x)",col="Blue",cx=1.5)
+```
 
 
+###Weibull
+```{r}
+sam = rweibull(30, 3, 2)
+myboot2(10000,x=sam,fun=function(x) mean(x),alpha=0.20,xlab="mean(x)",col="Purple",cx=1.5)
+myboot2(10000,x=sam,fun=function(x) median(x),alpha=0.20,xlab="median(x)",col="Purple",cx=1.5)
+```
+
+
+#Task 7
+##sd and quantile
+```{r}
+set.seed(68)
+sam=rnorm(20,mean=10,sd=4) 
+myboot2(10000,x=sam,fun=function(x) sd(x),alpha=0.05,xlab="sd(x)",col="Orange",cx=1.5)
+myboot2(10000,x=sam,fun=function(x) quantile(x),alpha=0.05,xlab="quantile(x)",col="Orange",cx=1.5)
+```
+
+
+##calculating the mean
+```{r}
+alpha2 = qnorm(1-(.05/2),mean=0,sd=1)
+left = mean(sam) - alpha2*(4/sqrt(20))
+right = mean(sam) + alpha2*(4/sqrt(20))
+left
+right
+```
+
+
+##mean
+```{r}
+set.seed(68)
+sam=rnorm(20,mean=10,sd=4)
+data=myboot2(10000,x=sam,fun=function(x) mean(x),alpha=0.05,xlab="mean(x)",col="Orange",cx=1.5)
+data$ci
+```
+
+
+##Comparison
+```
+The two intervals are very close
+```
 
 
 
