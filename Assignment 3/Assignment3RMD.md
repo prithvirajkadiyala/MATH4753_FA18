@@ -14,7 +14,7 @@ output:
 
 
 
-#Questions{7/16}
+#Questions{16/16}
 
 ##Question 1
 ###a 
@@ -331,7 +331,182 @@ Since the conditional probabilities and the unconditional probabilities are equi
 ```
 
 ##Question 8
+###8a
+![8a](8a.jpg){ width=50% }
+
+###8b
+![8b](8b.jpg){ width=50% }
+
+##Question 9
 ###a
+$$
+f(x,y)=\frac{e^{-y/10}}{10y},\;0<y<x<2y
+$$
+
+For marginal density $f(y)$
+
+$$
+\begin{align}
+f(y)&=\int^\infty_{-\infty}f(x,y)dx \\
+&= \int^{2y}_y\left[\frac{e^{-y/10}}{10y}\right]dx \\
+&=\left[\frac{1}{10}\frac{e^{-y/10}}{y}\biggr\rvert^{2y}_y\right] \\
+&= \frac{1}{10}e^{-y/10}
+\end{align}
+$$
+
+###b
+
+to Find E(y)
+$$
+\begin{align}
+E(y)&=\int_y y.f(y)dy\\
+&=\int^\infty_0 \left[\frac{1}{10}e^{\frac{-y}{10}}\right]ydy\\
+&=\left[\left[-(10+y)\right]\right]^\infty_0 \\
+&= 10
+\end{align}
+$$
+
+##Question 10
+###10a
+![10a](10a.jpg)
+
+###10b
+![10b](10b.jpg)
+
+##Question 11
+###11a
+![](11a.jpg)
+
+###11b
+![](11b.jpg)
+
+##Question 12
+![](12.jpg)
+
+##Question 13
+![](13.jpg)
+
+##Question 14
+###a
+
+```r
+LEADCOPP=read.csv("LEADCOPP.csv")
+LEAD = LEADCOPP$LEAD
+COPPER = LEADCOPP$COPPER
+layout(matrix(1:2,nr=1,nc=2,byrow=TRUE))
+hist(LEAD,main = "LEAD",xlab = LEAD)
+hist(COPPER,main = "COPPER",xlab = COPPER)
+```
+
+![](Assignment3RMD_files/figure-html/unnamed-chunk-16-1.png)<!-- -->
+
+```r
+leadci = t.test(LEAD,conf.level = 0.99)
+leadci$conf.int
+```
+
+```
+## [1] -1.147845  6.919045
+## attr(,"conf.level")
+## [1] 0.99
+```
+
+###b
+
+```r
+copperci = t.test(COPPER,conf.level = 0.99)
+copperci$conf.int
+```
+
+```
+## [1] 0.1518726 0.6647274
+## attr(,"conf.level")
+## [1] 0.99
+```
+
+###c
+```
+We can see that the lead has 99% confidence interval between -1.1478452, 6.9190452 whereas copper has a 99% confidence interval between 0.1518726, 0.6647274 From this we can say lead has more distribution around its mean when compared to the copper.
+```
+###d
+```
+99% confident means that the sample which we have from the actual population, the sample which we have is 99% statistically true with the actual population mean. 99% confident says how good our interval is statistically close to the actual population.
+```
+
+##Question 15
+
+```r
+SR = read.csv("SOLARAD.csv") 
+diff = SR$STJOS - SR$IOWA
+hist(diff)
+```
+
+![](Assignment3RMD_files/figure-html/unnamed-chunk-18-1.png)<!-- -->
+
+```r
+diffci = t.test(diff,conf.level = 0.95)
+diffci$conf.int
+```
+
+```
+## [1] 156.8193 239.1807
+## attr(,"conf.level")
+## [1] 0.95
+```
+
+
+```
+So, our 95% difference confidence interval is 156.819259, 239.180741
+```
+
+##Question 16
+
+```r
+DZ = read.csv("DIAZINON.csv") 
+res = DZ$DAY - DZ$NIGHT
+dayci = t.test(DZ$DAY)
+dayci$conf.int
+```
+
+```
+## [1]  6.307442 20.565286
+## attr(,"conf.level")
+## [1] 0.95
+```
+
+```r
+nightci = t.test(DZ$NIGHT)
+nightci$conf.int
+```
+
+```
+## [1] 27.49267 77.19824
+## attr(,"conf.level")
+## [1] 0.95
+```
+
+```r
+resci = t.test(res,conf.level = 0.90)
+resci$conf.int
+```
+
+```
+## [1] -58.89917 -18.91901
+## attr(,"conf.level")
+## [1] 0.9
+```
+
+```
+From the above CI intervals of day and night we can see the Diazinon residue CI are not intersecting and are to different sets of intervals without intersection. So, we can say they differ with each other.
+```
+
+
+
+
+
+
+
+
 
 
 
