@@ -201,10 +201,10 @@ Since the conditional probabilities and the unconditional probabilities are equi
 
 ##Question 8
 ###8a
-![8a](8a.jpg){ width=50% }
+![8a](8a.jpg)
 
 ###8b
-![8b](8b.jpg){ width=50% }
+![8b](8b.jpg)
 
 ##Question 9
 ###a
