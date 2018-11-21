@@ -107,11 +107,16 @@ g
 ```
 
 
-## How were the data collected? 
+## How was the data collected? 
+The data is taken from a sample data from the website [Kaggle database website](https://www.kaggle.com/rohankayan/years-of-experience-and-salary-dataset)
+
 
 ## What is the story behind the data?
+Being a computer Engineer graduate student, I was looking into how I could get the most money after graduating. I also wanted to see how much does years of experience does it take to make \$100K if i work in a single company. Also if i can't get to \$100K after working for many years in a single comapany. What would it take to make that kind of money.
 
 ## Why was it gathered? 
+This data was gathered to give an idea for the job-seekers of how much salary should be expected after having some Years of Experience. Even though salary might depend on various other factors ($salary = base + var * experience * performance$) as mentioned in this website [here](https://ask.metafilter.com/209665/Salary-Vs-experience-analysis).
+
 
 ## What is your interest in the data?
 With the prospects of working in the software industry in the future. It would really cool to analyze the working of the IT industry beforehand and be prepared with what to do and when to do given the circumstances can put me into really good perspective of getting into the market and negotiating for a higher base salary package.
@@ -155,9 +160,6 @@ The regression has five key assumptions:
 In order to estimate $\beta_0$ and $\beta_1$ we are going to use the method of least squares.As discussed in class this helps us determine the line that best fits our data points with the minimum sum of squares of the deviations. This is called the SSE or Sum of Squares for Errors. In a straight line model, we have already discussed that $y= \beta_0 +\beta_1x_i+\epsilon$. The estimator will be $\hat y= \hat\beta_0 +\hat \beta_1x_i$ . The residual(the deviation of the ith valueof y from its predicted value) is calculated bvy $(y_i-\hat y_i) = y_i-(\hat\beta_0+\hat\beta_1x_i)$. Thus $SSE=\sum^n_{i=1}[y_i-(\hat\beta_0+\hat\beta_1x_i)]$
 
 If the model works well with our data then we should expect that the residuals are approximately normal in distribution with mean = 0 and a constant variance.
-
-
-The following function was taken from [https://rpubs.com/therimalaya/43190](https://rpubs.com/therimalaya/43190)
 
 ## Checks on validity
 
@@ -375,7 +377,7 @@ amount2
 
 The predictions made using the first model (linear) are greater in the beginning and smaller in the end compared to the predictions made by the second model (quadratic), but they are extremely close to one another. Further comparisons will be necessary to determine which model will be the best fit for the dataset.
 
-## Use adjusted $R^2$ 
+## Comparing adjusted $R^2$ 
 ```{r}
 summary(dataset.lm)
 summary(quad.lm)
@@ -383,20 +385,65 @@ summary(quad.lm)
 
 The multiple $R^2$ for the linear model is 0.379; the adjusted $R^2$ is 0.376. The multiple $R^2$ for the quadratic model is 0.4468; the adjusted $R^2$ is 0.4414.
 
-According to these results, both the models have a low multiple $R^2$ value. But the quadratic linear model has a significantly higher value which tells us that the Quadratic model fits the data better than the Linear model. "Linear regression calculates an equation that minimizes the distance between the fitted line and all of the data points. Technically, least squares regression minimizes the sum of the squared residuals." ![Website link](http://blog.minitab.com/blog/adventures-in-statistics-2/regression-analysis-how-do-i-interpret-r-squared-and-assess-the-goodness-of-fit)
+According to these results, both the models have a low multiple $R^2$ value. But the quadratic linear model has a significantly higher value which tells us that the Quadratic model fits the data better than the Linear model. "Linear regression calculates an equation that minimizes the distance between the fitted line and all of the data points. Technically, least squares regression minimizes the sum of the squared residuals." ![Website link](http://blog.minitab.com/blog/adventures-in-statistics-2/regression-analysis-how-do-i-interpret-r-squared-and-assess-the-goodness-of-fit). The adjusted $R^2$ is greater for the Quadratic model than the Linear model which tells us that the Quadratic model can fit more data into the model or can predict with more accuracy than the Linear model.
 
-### Check on outliers using cooks plots
+##Using Anova for Confirmation
+To avoid any premature decisions it is always suggested to make the final calculation to make the final decision. So we try to do an anova test to confirm if what we did was right or wrong.
+```{r}
+anova(dataset.lm,quad.lm)
+```
 
-Remember to interpret this plot and all other plots
+Seeing the results, we can see that the p-value is too small causing us to reject the null hypothesis as there is very large evidence against the null-hypothesis that the Linear model is better than the quadratic model.
+So after this confirmation we can say that Quadratic model obviously is better than the Linear model.
+
+But again before concluding, we are going to use cook's plot to avoid having any bias towards any kind of result.
+
+
+## Check on outliers using cooks plots
+```{r}
+cooks20x(quad.lm)
+```
+
+
+```{r}
+dataset2.lm=lm(Salary~YrsExper+ I(YrsExper^2), data=dataset[-208,])
+summary(dataset2.lm)
+summary(quad.lm)
+```
+
+After looking at the summaries of the standard Quadratic model and the model after taking out the maximum cook's value from the dataset variable. We can see that the Residual Standard Error has decreased from 8413 to 7851. And also the adjusted $R^2$ increase from 0.4414 to 0.514 giving us a better chance at predicting new data or just making sure that more of the data is included in the curve. Also we can see that the F-statistic value increases from 82.77 to 109.9 giving us a better result in general.
 
 
 
 # Conclusion
+Concluding the models and the results we got from the models.
+We did get two different graphs and predictions from two models. After analyzing the predictions and the summaries of the values after taking the cook's plot values and deleting the most significant value in the Quadratic model. We achieved a better result in the form of better Adjusted multiple $R^2$ value and reduced error value. We also got better predictions with the Quadratic model than the Linear model so we can say that the Quadratic model is better suited for the data we had today for our analysis. Cook's plot gave us a clear view of some of the data that was causing the graph to favour some data points and when we took out that outlier the multiple $R^2$ value seems to increase a bit making room for more values to be taken closer to the predicted line.
+
+
 ## Answer your research question
+Research questin here was "Is the Years of Experience alone enough to increase your salary?"
+According to all of the reasearch and analysis done until now we can clearly see that the salary does increase with the increase of years of experience of the employee but we also see that the increase is not significant enough making us question that the salary is dependent on other factors as well. But with all the analysis that we have done today shows us that salary does increase when the employee has a reasonable amount of experience with him.
+
+
 ## Suggest ways to improve model or experiment
+This experiment of predicting salary can be improved by taking many otherd factors into consideration like Degree of the employee, Proficiency of the employee, Technical knowledge, etc. The dataset we have today consists of only 200 odd number od records, so if we want to have a much more correct estimation we need to have more data regarding this matter and account for all the possible values in different categories.
 
 
 # References
-  Salary Pic - https://insights.dice.com/2016/02/11/how-much-will-experience-increase-my-salary/ 
-  Graph - https://www.forbes.com/sites/cameronkeng/2014/06/22/employees-that-stay-in-companies-longer-than-2-years-get-paid-50-less/#1fb8fb8be07f
+  Salary differences - https://insights.dice.com/2016/02/11/how-much-will-experience-increase-my-salary/ 
+  
+  Graph of Increase in Salary - https://www.forbes.com/sites/cameronkeng/2014/06/22/employees-that-stay-in-companies-longer-than-2-years-get-paid-50-less/#1fb8fb8be07f
+  
   Assumptions of Linear Regression - https://www.statisticssolutions.com/assumptions-of-linear-regression/ 
+  
+  Forbes Articles - https://www.forbes.com/sites/cameronkeng/2014/06/22/employees-that-stay-in-companies-longer-than-2-years-get-paid-50-less/#3ae687b8e07f
+  
+  Dataset website - https://www.kaggle.com/rohankayan/years-of-experience-and-salary-dataset
+  
+  Simple Linear Regression - https://onlinecourses.science.psu.edu/stat501/node/251/ 
+  
+  Tools to calcuate salaries - https://www.recruiter.com/i/10-great-salary-calculators-to-save-you-time/
+  
+  Textbook - Mendenhall, W.M. and Sincich, T.L. (2016). Statistics for Engineering and the Sciences, Sixth Edition. https://books.google.com/books?id=OHNGrgEACAAJ. isbn=9781498728850,lccn=2015041987. 
+  
+  Canvas - https://canvas.ou.edu/courses/84540 
