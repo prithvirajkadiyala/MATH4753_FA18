@@ -1,0 +1,230 @@
+---
+title: "Lab14"
+author: "Prithviraj Kadiyala"
+date: "November 30, 2018"
+output:
+  html_document:
+    fig_caption: yes
+    keep_md: yes
+    number_sections: yes
+    toc: yes
+    toc_float: yes
+    theme: spacelab
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+#Task 1
+```{r}
+getwd()
+```
+
+#Task 2
+##Function
+```{r}
+mylsq=function(x,y){
+  ssxx=sum((x-mean(x))^2 )
+  ssxy=sum((x-mean(x))*(y-mean(y))) 
+  b1hat=ssxy/ssxx
+  b0hat=mean(y)-b1hat*mean(x)  
+  return(list(b0hat=b0hat,b1hat= b1hat)) 
+}
+```
+
+##abline
+```{r}
+x=1:20 
+set.seed(29);y=4+6*x + rnorm(20,0,5) 
+plot(x,y,main="Least square line",xlab="x",ylab="y")
+mylsq(x,y)  #computeleast square estimates
+b1hat=mylsq(x,y)$b1hat
+b0hat=mylsq(x,y)$b0hat
+abline(b0hat,b1hat,lwd=2,col="blue") # draw the abline of estimates
+```
+
+##check
+```{r}
+slr=lm(y~x); summary(slr)
+```
+
+#Task 3
+##Function
+```{r}
+mypred=function(x,b0,b1){
+ym=b0+ b1*x
+ym
+}
+```
+
+## b
+```{r}
+ym=mypred(x=15.5,b0hat,b1hat)
+ym
+set.seed(29);y=4+6*x + rnorm(20,0,5) 
+plot(x,y,main="Least square line",xlab="x",ylab="y")
+mylsq(x,y)  #computeleast square estimates
+b1hat=mylsq(x,y)$b1hat
+b0hat=mylsq(x,y)$b0hat
+abline(b0hat,b1hat,lwd=2,col="blue") # draw the abline of estimates
+points(x=15.5,y=ym,cex=3,col="Green",pch=19)
+```
+
+## c
+### a
+```{r}
+OJ = read.csv("OJUICE.csv",sep=",")
+x=OJ$Pectin
+y=OJ$SweetIndex
+mylsq(x,y)
+b1hat=mylsq(x,y)$b1hat
+b0hat=mylsq(x,y)$b0hat
+plot(x,y,main="Least square line fitted",xlab="x",ylab="y")
+abline(b0hat,b1hat,lwd=2,col="blue")
+ym=mypred(x=300,b0hat,b1hat)
+ym
+```
+
+### b
+```
+B1hat is slope of fitted line when we increase pectin by one, the sweetness of OJUICE will decrease by 0.00231062. B0hat is the cuttoff of the fitted line and when the pectin is zero the sweetness will be 6.252068
+```
+
+### c
+```{r}
+ym=mypred(x=300,b0hat,b1hat)
+ym
+```
+
+
+## d
+
+### a
+```{r}
+DR = read.csv("DRILLROCK.csv",sep=",")
+x=DR$DEPTH
+y=DR$TIME
+mylsq(x,y)
+b1hat=mylsq(x,y)$b1hat
+b0hat=mylsq(x,y)$b0hat
+plot(x,y,main="Least square line fitted",xlab="x",ylab="y")
+```
+
+### b
+```
+The least square prediction equation is:
+y = b0hat+b1hat+x
+y=4.789603+0.0143878*x
+```
+
+### c
+```{r}
+DR = read.csv("DRILLROCK.csv",sep=",")
+x=DR$DEPTH
+y=DR$TIME
+mylsq(x,y)
+b1hat=mylsq(x,y)$b1hat
+b0hat=mylsq(x,y)$b0hat
+plot(x,y,main="Least square line fitted",xlab="x",ylab="y")
+abline(b0hat,b1hat,lwd=2,col="blue")
+```
+
+
+#Task 4
+##Function
+```{r}
+mysq=function(x,y){
+  n=length(x)
+  ssxx=sum((x-mean(x))^2 )
+  ssxy=sum((x-mean(x))*(y-mean(y))) 
+  b1hat=ssxy/ssxx
+  b0hat=mean(y)-b1hat*mean(x)   
+  yhat=b0hat+ b1hat*x  
+  ssr=sum((y-yhat)^2) 
+  sq=ssr/(n-2)  
+  return(list(ssr=ssr,sq=sq))
+}
+```
+
+##From task 2
+```{r}
+x=1:20 
+set.seed(29);y=4+6*x + rnorm(20,0,5) 
+obj = mysq(x,y)
+obj$ssr
+obj$sq
+sqrt(obj$sq) 
+```
+
+##Carbon Data
+### a
+```{r}
+C = read.csv("CARBON.csv",sep=",")
+x=C$LabFurnace
+y=C$PilotPlant
+mylsq(x,y)
+b1hat=mylsq(x,y)$b1hat
+b0hat=mylsq(x,y)$b0hat
+plot(x,y,main="Least square line fitted",xlab="x",ylab="y")
+```
+
+### b
+```{r}
+x=C$LabFurnace
+y=C$PilotPlant
+mylsq(x,y)
+b1hat=mylsq(x,y)$b1hat
+b0hat=mylsq(x,y)$b0hat
+plot(x,y,main="Least square line fitted",xlab="x",ylab="y")
+abline(b0hat,b1hat,lwd=2,col="blue")
+```
+
+### c
+```{r}
+obj = mysq(x,y)
+obj$ssr
+obj$sq
+```
+
+### d
+```{r}
+sqrt(obj$sq)
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

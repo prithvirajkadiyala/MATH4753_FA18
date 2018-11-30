@@ -87,7 +87,14 @@ dataset = read.csv("Emp_Salary.csv",header=TRUE,sep=",")
 head(dataset)
 ```
 
-```{r carnames}
+The variables we use here are 
+
+* Employees - Discrete, Qualitative
+* YrsExper - Discrete, Quantitative
+* Salary - Discrete, Quantitative
+* EducLev - Discrete, Qualitative
+
+```{r names}
 names(dataset)
 ```
 
@@ -123,7 +130,7 @@ With the prospects of working in the software industry in the future. It would r
 
 ## What problem do you wish to solve?
 I would like to look into the dataset and try to relate if the salary is dependent on years of experience directly. If not, then do we see a lot of variation in the graph as the years of xperience increases. Some people clain that only technical knowledge will take us to a position that pays us well. It's true to some extent but we will study about how having experience will have an impact on one's salary.
-So the problem we define today is going to be "Is years of experience alone enough to increase your salary or does having years and years of experience doesnt have an effect on your salary at all".
+So the problem we define today is going to be "Does the Salary have linear relation with respect to Years of Experience?".
 
 # Theory needed to carry out SLR
 I believe that the value of Salary (Y) tends to increase as Years of Experience (X), that is, when the employee has increasing years of experience his salary also tends to increase. I want to make a model relating the two variables to one another by drawing a line through all the points. I will define salary as my dependent variable, and years of expeirence as my independent variable.
@@ -277,7 +284,7 @@ Yrs.fit=fitted(dataset.lm)
 
 ##Residuals vs Yrs of Experience values
 ```{r}
-plot(dataset$YrsExper,Yrs.res, xlab="YrsExper",ylab="Residuals",ylim=c(-1.5*max(Yrs.res),1.5*max(Yrs.res)),xlim=c(0,1.6*max(Yrs.fit)), main="Residuals vs Yrsof Experience")
+plot(dataset$YrsExper,Yrs.res, xlab="YrsExper",ylab="Residuals",ylim=c(-1.5*max(Yrs.res),1.5*max(Yrs.res)),xlim=c(0,max(dataset$YrsExper)), main="Residuals vs Yrsof Experience")
 ```
 
 
@@ -297,10 +304,10 @@ normcheck(dataset.lm,shapiro.wilk = TRUE)
 
 The p-value for the shapiro-wilk test is 0. The null hypothesis in this case would be that the errors are distributed normally.
 
-$$\epsilon_i \sim N(0,\sigma^2)$$
+```
+Since the Normality test is very sensitive to large amount of data. We assume that the errors are normlly distriuted.
 
-The results of the Shapiro-wilk test indicate that we have enough evidence against to reject the null hypothesis(as the p-value is 0 compared to the standard of comparison 0.05) leading us to the conclusion that the data is not normally distributed.
-
+```
 
 # Testing another model for comparison
 <center>
@@ -329,6 +336,11 @@ plot(quad.lm, which = 1)
 
 ```{r}
 normcheck(quad.lm, shapiro.wilk = TRUE)
+```
+
+```
+Again we see that we get P-value to be zero because the normality test is very sesnsitive to the large data.
+We again assume that errors are normally distributed.
 ```
 
 The p-value is 0. Again, the results of the Shapiro-Wilk test indicate that we DO have enough evidence to reject the null hypothesis, leading us to again assume that the data is NOT distributed normally.
@@ -421,12 +433,12 @@ We did get two different graphs and predictions from two models. After analyzing
 
 
 ## Answer your research question
-Research questin here was "Is the Years of Experience alone enough to increase your salary?"
-According to all of the reasearch and analysis done until now we can clearly see that the salary does increase with the increase of years of experience of the employee but we also see that the increase is not significant enough making us question that the salary is dependent on other factors as well. But with all the analysis that we have done today shows us that salary does increase when the employee has a reasonable amount of experience with him.
+Research questin here was "Does the Salary have linear relation with respect to Years of Experience?"
+According to all of the reasearch and analysis done until now we can clearly see that the salary does increase with the increase of years of experience of the employee but we also see that the increase is not linear. As the employee gains more and more experience his/her salary seems to increase exponentially. Of course there can be other factors that can impact the result.
 
 
 ## Suggest ways to improve model or experiment
-This experiment of predicting salary can be improved by taking many otherd factors into consideration like Degree of the employee, Proficiency of the employee, Technical knowledge, etc. The dataset we have today consists of only 200 odd number od records, so if we want to have a much more correct estimation we need to have more data regarding this matter and account for all the possible values in different categories.
+This experiment of predicting salary can be improved by taking many otherd factors into consideration like Degree of the employee, Proficiency of the employee, Technical knowledge, etc. The dataset we have today consists of only 200 odd number of records, so if we want to have a much more correct estimation we need to have more data regarding this matter and account for all the possible values in different categories.
 
 
 # References
