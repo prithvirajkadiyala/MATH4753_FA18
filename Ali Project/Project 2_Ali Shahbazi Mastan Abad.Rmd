@@ -1,0 +1,306 @@
+---
+title: "MATH 4753 Project 2"
+author: "Ali Shahbazi Mastan Abad"
+date:  "`r format(Sys.time(), '%d %B, %Y')`"
+output:
+  html_document:
+    code_folding: show
+    csl: biomed-central.csl
+    df_print: paged
+    fig_caption: yes
+    fig_height: 6
+    fig_width: 7
+    number_sections: yes
+    theme: journal
+    toc: yes
+    toc_float: yes
+  word_document:
+    toc: yes
+    toc_depth: 4
+  pdf_document:
+    df_print: kable
+    fig_caption: yes
+    fig_height: 6
+    fig_width: 7
+    highlight: tango
+    toc: yes
+    toc_depth: 4
+bibliography: project.bib
+---
+
+<center>
+
+![Ali Shahbazi in Napa California](Ali Shahbazi.jpg "My Picture"){ width=30% }
+
+</center>
+
+#**Abstract**
+The growth rate of adults and children are different. Therefore, body mass index (BMI) cannot be used for children. A new scale is needed which considers the fact that children grow fast, and they can be above their predicted BMI and still be of optimum weight. Therefore, there is a need to find a new model for children. In the United States in $1967$, $237$ children were surveyed in different parts, disregarding the gender ratio. For these children, their weight and height are measured, and it was found that there is a direct positive increasing correlation between these data plots. Therefore, a simple linear regression was carried out for the data with height as the explanatory variable and weight as the response variable. The model found is $Weight = -126.36 + 3.82\times Height$. Using this model, we can find that whether a child is underweight, overweight or optimum weight. There is just one problem with the model, out of the 5 assumptions listed in the document, 1 does not hold - this is that the residuals are normally distributed. The hypothesis test done for this rejects the null that is that residuals are normally distributed. Besides this, the model provides an accurate description of the reality.
+
+#Project
+
+We are interested in finding out what the weight of a baby will be based on the height. This helps us determine whether the baby is underweight, correct weight or overweight. Body mass index (BMI) is not a good predictor for children because it is normal for an average child to be over their BMI but still be healthy. Therefore, we must predict what should the weight be, when the height is a certain amount. This data is collected from a population of 237 babies, where there are 111 females and 126 males. Therefore, we can say that the gender ratio is quite balanced. This data is also collected from various children across the United States. The sample that we are getting from the population is quite large, 237 and central limit theorem might apply. We need a model that can predict the weight based on the height. The data is collected for children of age 139 months (11 years and 7 months) to 250 months (20 years and 10 months).
+
+##Assumptions
+
+  1. Weight and height are independent variables
+  2. Model will not be able to predict children between 139 and 250 Months
+  3. Model will be constraint between the maximum and minimum height of the child, which is 50.50 inches and 72 inches.
+  4. If a child is not in this range, the model will not be consistent
+
+```{r}
+getwd()
+```
+
+
+```{r}
+#Record data
+data=read.table('slrdata.csv',header=TRUE,sep=",")
+head(data)
+summary(data) #Comment that this is an almost equal ratio of men to women
+
+#Import libraries
+library(s20x)
+library(ggplot2)
+
+#Making columns of individual data
+#Variables are: Gender, Age (in months), Height (inches) and Weight (pounds)
+gender=data$X...Gender #Will not be used. 
+age=data$Age   #Will not be used. 
+height = data$Height
+weight = data$Weight
+```
+
+```{r}
+#plot height vs weight. Height should be on the x-axis. 
+plot(data$Height,data$Weight,bg="RED",pch=21,cex=.8)
+layout(matrix(1:2, nc=2))
+trendscatter(data$Weight~data$Height,f=.4,
+main="Connect the mean and plot 1 sd around it, f = .4",cex=.8) #Found by trial and error
+trendscatter(data$Weight~data$Height,f=.5,
+main="Connect the mean and plot 1 sd around it, f = .5",cex=.8) #Found by trial and error
+layout(matrix(1:2, nc=2))
+trendscatter(data$Weight~data$Height,f=.6,
+main="Connect the mean and plot 1 sd around it, f = .6",cex=.8) #Found by trial and error
+trendscatter(data$Weight~data$Height,f=.7,
+main="Connect the mean and plot 1 sd around it, f = .7",cex=.8) #Found by trial and error
+```
+
+From f = .4 and .5 (figure 1), the general linear trend is seen but it is not very clear. Through trial and error, we find f = .75 provides the smoothest curve with 1 standard deviations around the points.
+
+```{r}
+layout(1)
+trendscatter(data$Weight~data$Height,f=.75,
+main="Connect the mean and plot 1 sd around it, f = .75",cex=.8)  #Found by trial and error
+```
+
+From f = .4 and .5 (figure 1), the general linear trend is seen but it is not very clear. Through trial and error, we find f = .75 provides the smoothest curve with 1 standard deviations around the points.
+height increases. Therefore, we can model the explanatory variable (height) and the response (weight) linearly. Before we do that, we should find out the possible outliers.
+
+
+```{r}
+#Cooks plot. Identifying the outliers
+heiwei.lm=lm(data$Weight~data$Height)
+summary(heiwei.lm)
+cooks20x(heiwei.lm)
+#Might consider removing points - 1, 227 and 233. This might improve the accuracy of the model. 
+#Considerable difference between these three points and the rest of the residuals.
+```
+
+In this plot (figure 3), the individual residuals are plotted, and we find that three of them seem to be three outliers (two very prominent and 1 slightly). These outliers could have occurred due to numerous reasons such as, this data might be from a different population or a mistake in reading the data such as transcriptional error. We cannot exactly identify the reason, however, keeping them in the data frame will skew the model, therefore, we should remove these points (1, 227 and 233). Since our sample size is so big (237), removing 3 points will not affect the size since it will be 234. Even after removing three, this is still a large sample. A new  Cook's plot is shown (figure 4) with the updated values.
+
+```{r}
+data2 = data[-c(1,227,233),] #So, delete those 3 rows. 
+heiwei2.lm=lm(data2$Weight~data2$Height,data=data2)
+summary(heiwei2.lm)
+#After removing the three points, the Standard error decreases for the b0hat, b1hat and residuals,
+#R squared value increases and the F statistic decreases. 
+
+cooks20x(heiwei2.lm)
+#The points seem to be closer together now. There are still three outliers because the cooks plot...
+#always returns three points, but these point seem to be much closer together than the others. 
+#Since our sample size is so big, we do not have to worry about the sample size with 
+#a decrease in data sample.
+```
+
+
+In figure 4, we can see that all the residuals seem to be of similar sizes and none of them area skewed. This is very important in being able to predict the correct linear model. By deleting these points, we observe that the $R^2$ value	increases,	standard	error	decreases	for	residuals,$\hat{\beta_0}$ and $\hat{\beta_1}$ decreases. This	is good because it is reducing the	error	that the	model	is exposed to. Therefore,	a	linear model can be predicted, which looks like this.
+
+$$\bar{y} = \hat{\beta_0}+ \hat{\beta_1} \times \bar{x}$$
+where $\hat{\beta_0}$ is the y-intercept estimator and beta1 is the slope point estimator. $X$ is the explanatory variable, height, and y is the response variable, weight. These $\hat{\beta_0}$ and $\hat{\beta_1}$ can easily be calculated using R. The formula for $\hat{\beta_1}$ is: $$\hat{\beta_1}= \frac{SS_{xy}}{SS_{xx}}$$
+
+In which $SS_{xy}$ and $SS_{xx}$ can be calculated using the following theoretical equations:
+
+$$SS_{xx}=\sum_{n=1}^{n} (x-\bar{x})^2$$
+$$SS_{xy}=\sum_{n=1}^{n} (x_i-\bar{x})\times y_i$$
+
+```{r}
+#Smoother scatter plot
+#Before we use abline, we have to check whether there is a linear fit or not. 
+plot(data2$Height,data2$Weight,xlab = "Height (in)", ylab = "Weight (lb)",
+     main = "Graph of the new data"); 
+lines(lowess(data2$Height, data2$Weight, f=.65),lwd=2,col="RED",lty=1) 
+abline(heiwei2.lm, col="BLUE",lwd=2)
+legend(51,150,c("Regression line y=-126.36+3.70x","Connecting the means"),col=c("BLUE","RED"),lty=1:2,cex=.8)
+```
+
+In the figure 5 above, the model we have predicted is very close to the f=0.75 trendscatter line that we had in figure 2. This is good news because it means that our linear model is very close to the predicted mean. The linear model found is:
+
+$$\hat{y}=-126.36+3.70x$$
+Estimate Std. Error t value Pr(>|t|)
+
+(Intercept) -126.3576 12.1838 -10.37 <2e-16
+
+**data2$Height 3.7027 0.1982 18.68 <2e-16 **
+
+Signif. codes: 0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+$H_0:\beta_0=0$
+Since p-value is really small, we reject the null and say that $\beta_0$ is not equal to $0$.
+
+$H_0:\beta_1=0$
+Since p-value is really small, we reject the null and say that $\beta_1$ is no equal to $0$.
+
+In both the circumstances above, we reject the null. Therefore, we accept the predicted values of -126.3576 and 3.7027.
+
+There is a different between $y_i$ and $\hat{y}$ and this is acalled the resuduals. These are the quantities that we plotted in the cook's plot in figure 3 and 4.
+
+$$y_i=\hat{y_l}+\epsilon_i$$
+where $\epsilon_i$ is the random error. These are the individual residuals. These residuals are shown below in figure 6 in the black, while the points are shown blue.
+
+```{r}
+with(data2,plot(data2$Weight~data2$Height,bg="Blue",pch=21, cex=1.2, main = "Regression deviations (RSS)", data=data2))
+yhat1=with(data2,predict(heiwei2.lm,data.frame(data2$Height)))
+with(data2, {
+  segments(data2$Height, data2$Weight, data2$Height,yhat1)
+})
+abline(heiwei2.lm)
+
+RSS = with(data2,sum((Height-yhat1)^2))
+RSS
+```
+
+for a linear model to be true, there are some assumptions that we have to make about the residuals
+
+Assumptions 1 was mentioned before.
+
+   - Assumption 2 $-E(\epsilon)=0$
+   - Assumption 3 $-Var(\epsilon)=\sigma^2$ is constant for all x values
+   - Assupmtion 4 $-\epsilon$ has a normal distribution
+   - Assumption 5 $-\epsilon '$s are independant
+  
+The mean of all the residuals is calculated and is found to be $-1.011774\times 10^{-16}$. This value is very small, approximately 0, therefore, we assume that it is 0. Therefore, we satisfy the Assumption 2. In the figure 7 below, the resuduals are plotted along with their mean mentioned above.
+
+```{r}
+#Now that we have confirmed that there is a linear fit, we can produce a linear model. 
+plot(heiwei2.lm,which=1,lwd=2)
+abline(0,0,lwd=3)
+mean(heiwei2.lm$residuals)
+legend(63,44,c("Smoother line","Mean of residuals"),col=c("RED","BLACK"),lty=c(1,1))
+```
+
+
+In figure 7, in red is the smooth line, which is the mean that particular x axis value. It can be seen that both the lines are close by, whic is ideal. The true mean is close to the estimator mean.
+
+
+```{r}
+data2[,5] = heiwei2.lm$residuals
+g = ggplot(data2,aes(x=Height, y=V5,ylab="Residuals"))             
+g = g + geom_point() + ggtitle("Graph of residuals vs Height")+
+  theme(plot.title = element_text(hjust = 0.5)) + labs(x="Height",y="Residuals")
+g
+g=g+geom_smooth(method="lm") #Plotting one standard deviation. It can be seen that the sd is 
+#not constant
+g
+```
+
+
+Also, in the figure 8, we can see that the standard deviation of the residuals is not perfectly constant. However, since there are less points towards the end, standard deviation does tend to increase because of that. Looking at both the sides, we can say that this standard deviation is not changing too much, therefore, we assume it to be constant, thus satisfying the assumption 3. This standard deviation is given as residual standard error = 11.64. The assumption 1 and 5 are connected. Assumption 1, which is that the height and weight are independent also brings that the residuals in the model are also independent. It is just an assumption that we have to make. Finally, we have to check for assumption 4.
+
+```{r}
+normcheck(heiwei2.lm,shapiro.wilk=TRUE)
+#Well, Shapiro-Wilk normality test predicts that the residuals are not normally distributed. 
+trendscatter(heiwei2.lm$residuals~data$Height,f=1)
+
+data2[,5] = heiwei2.lm$residuals
+g = ggplot(data2,aes(x=Height, y=V5,ylab="Residuals"))             
+
+hist(data2$V5)
+```
+
+The hypothesis test for Shapiro-Wilk normality test is
+
+  - $H_0$: The population is normally distributed.
+  - $H_1$: The population is not normally distributed
+
+Since the p value is 0 (figure 9), which is less than our significance level of 0.05, we reject the null. Therefore, we can say with strong significance that the population i.e. residuals are not normally distributed. Here our assumption about the residuals being normally distributed fails. Therefore, the simple linear regression model that we create will not be completely accurate, since this assumption is not met. To analyze the linear model, the $R^2$ value for the model is found to be $0.6007$. That means $60.07%$ of the variance in the weight is explained by the variance in Height. $R^2$ value is a measure of how well our model fits the data, assuming that we have correctly identified and modelled the trend. The R2 value found is a little low but it still predicts that there is a positive correlation. When we look at the F statistic, it is $349$ with p-value as $2.2\times 10^{-16}$. Here
+
+  - $H_0$: None of the explanatory variables are related to the response
+  - $H_1$: The explanatory variables are not related to the response
+
+Since the p value is so small, with strong significance, we can reject the null. This means that there is a significant relationship between the Height and Weight. According to our SLR model, the confidence intervals for the point estimates are:
+
+<center>
+![](1.jpg){width=50%}
+</center>
+
+The confidence interval values for the estimator are given in table 1 above. These values are plotted onto the graph below
+
+
+```{r}
+anova(heiwei2.lm)
+#H0 for the F test hypothesis is that "None of the explanatory variable (Height)
+#are related to the response (Weight)" and we reject the null hypothesis
+summary(heiwei2.lm)
+#standard deviation of the residual is sqrt(11.64) = sqrt(residual standard error)
+
+#Address the p test of the slope. We are generally not interested in the intercept. 
+
+ciReg(heiwei2.lm)
+
+#Creating confidence intervals
+plot(data2$Height,data2$Weight,xlab = "Height (in)", ylab = "Weight (lb)",
+     bg="RED",pch=21,cex=.8)
+x=seq(51.3,72,by=.1)
+yl = -126.36+3.31219*x
+yu = -126.36+4.09322*x
+lines(x,yl,col="BLUE",lwd=2)
+lines(x,yu,col="BLUE",lwd=2)
+abline(heiwei2.lm,lwd=2)
+legend(51,150,c("Confidence interval","Linear model"),col=c("BLUE","BLACK"),lty=1:1,lwd=2)
+xp =c(57.5,62.5,67.5)
+yp = -126.36 + 3.8181*xp
+yp
+```
+
+
+```{r}
+
+predict1=predict(heiwei2.lm, interval="prediction")
+plot(data2$Height,data2$Weight,xlab = "Height (in)", ylab = "Weight (lb)",
+     bg="RED",pch=21,cex=.8)
+abline(heiwei2.lm)
+summary(data2$Height)
+newx = seq(51.30,72,by=.0885)
+dataheightnewx = data2$Height=newx
+confidence = predict(heiwei2.lm,newdata=data.frame(dataheightnewx),interval="confidence")
+lines(newx,confidence[,2])
+
+pred.int=predict(heiwei2.lm,interval="prediction")
+pred.lower=pred.int[,2]
+pred.upper=pred.int[,3]
+conf.int=predict(heiwei2.lm,interval="confidence")
+conf=conf.int[,1]
+conf.lower=conf.int[,2]
+conf.upper=conf.int[,3]
+newx = seq(51.30,72,by=.0885)
+lines(newx,conf.lower,col="BLUE")
+lines(newx,conf.upper,col="BLUE")
+lines(newx,conf)
+lines(newx,pred.lower,col="RED")
+lines(newx,pred.upper,col="RED")
+legend(51,150,c("Confidence Interval","Prediction Interval","Mean"),col=c("BLUE","RED","BLACK"),lty=1:1,lwd=2)
+
+interval=predict20x(heiwei2.lm,data)
+```
+
